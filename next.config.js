@@ -7,6 +7,4 @@ const nextConfig = {
 module.exports = {
   reactStrictMode: true,
   pageExtensions: ["js", "jsx", "ts", "tsx"],
-  assetPrefix: "https://jesuslovesshiva.github.io/mapswithmeaning/",
-  basePath: "https://jesuslovesshiva.github.io/mapswithmeaning/",
 };
