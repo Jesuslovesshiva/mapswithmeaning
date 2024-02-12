@@ -73,7 +73,7 @@ const HomePage = () => {
 
         <div className="w-full flex justify-center">
           {/* Display showYear directly */}
-          <span className="absolute top-30 left-11 text-gray-500 text-3xl font-bold">
+          <span className="absolute top-30 left-11 text-gray-500 text-3xl font-bold hide-on-small-screen">
             Year - {showYear}
           </span>
 
@@ -86,8 +86,10 @@ const HomePage = () => {
                 placeholder="Enter a year (e.g., 1519)"
                 style={{ fontFamily: "arial" }}
                 maxLength="4"
-                pattern="\d{4}"
-                title="Four digit year, e.g. 1519"
+                pattern="\d{1,4}"
+                min="900"
+                max="2024"
+                title=""
                 required
                 className="h-10 pl-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-100 bg-grey-300 mb-10"
               />

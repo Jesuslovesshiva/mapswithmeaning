@@ -6,7 +6,7 @@ import { faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
 const Footer = () => {
   return (
     <footer className="bg-gray-700 text-white ">
-      <div className="footer-content flex flex-col items-center justify-center text-center">
+      <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
         <h3 className="text-3xl font-medium">
           Teocalli - A Map for every Year{" "}
         </h3>
@@ -45,7 +45,7 @@ const Footer = () => {
           </li> */}
         </ul>
       </div>
-      <div className="footer-bottom text-center">
+      <div className="footer-bottom text-center mx-5">
         <p className="text-gray-400">
           copyright &copy;{" "}
           <a href="#" className="text-grey-400">
@@ -53,7 +53,7 @@ const Footer = () => {
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
             Google Maps Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information | v.1.0
+            retrieving historical information | v1.1
           </span>
         </p>
         {/* <div className="footer-menu">

@@ -50,3 +50,9 @@
 body {
   font-family: "Alumni Sans", sans-serif;
 }
+
+@media (max-width: 480px) {
+  .hide-on-small-screen {
+    display: none;
+  }
+}
