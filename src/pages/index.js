@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Footer from "./footer";
+import Image from "next/image";
 
 const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
   ssr: false,
@@ -56,10 +57,13 @@ const HomePage = () => {
       <div className="flex flex-col mb-12 bg-gray-700">
         <div className="flex flex-col items-center">
           <div className="w-64 h-62 flex justify-center items-center">
-            <img
+            <Image
               src="/png/logo-no-background.png"
               alt="Logo"
-              className="object-contain max-w-full max-h-full overflow-hidden m-10"
+              width={240} // Adjust based on your image's dimensions or desired display size
+              height={248} // Adjust based on your image's dimensions or desired display size
+              objectFit="contain"
+              className="m-10"
             />
           </div>
         </div>
