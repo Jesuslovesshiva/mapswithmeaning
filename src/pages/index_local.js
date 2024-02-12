@@ -23,14 +23,11 @@ const HomePage = () => {
     setShowLoadingBar(true); // Show loading bar when API call starts
 
     try {
-      const verifyResponse = await fetch(
-        "https://mapswithmeaning.lm.r.appspot.com/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ year: year.trim() }),
-        }
-      );
+      const verifyResponse = await fetch("http://localhost:5000/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year: year.trim() }),
+      });
 
       if (!verifyResponse.ok) {
         throw new Error(`HTTP error! status: ${verifyResponse.status}`);
@@ -62,7 +59,7 @@ const HomePage = () => {
               alt="Logo"
               width={240} // Adjust based on your image's dimensions or desired display size
               height={248} // Adjust based on your image's dimensions or desired display size
-              style={{ objectFit: "cover" }}
+              objectFit="contain"
               className="m-10"
             />
           </div>
