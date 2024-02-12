@@ -16,28 +16,24 @@ const Marker = dynamic(
 const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false,
 });
-
-const DynamicMap = ({ countries, details }) => {
+const DynamicMap = ({ countries, cities, details }) => {
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
+      const places = [...countries, ...cities];
       const localCache = {};
 
       const coords = await Promise.all(
-        countries.map(async (country) => {
-          if (localCache[country]) {
-            return {
-              ...localCache[country],
-              country,
-              detail: details[country],
-            };
+        places.map(async (place) => {
+          if (localCache[place]) {
+            return localCache[place];
           }
 
           try {
             const response = await fetch(
               `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-                country
+                place
               )}&key=AIzaSyBZ3peBslyDJvye5KZF5ACHHmjgHlROryI`
             );
             const data = await response.json();
@@ -46,10 +42,10 @@ const DynamicMap = ({ countries, details }) => {
               const location = {
                 lat: parseFloat(lat),
                 lon: parseFloat(lng),
-                country, // Add country name
-                detail: details[country], // Add associated detail
+                place, // Add place name
+                detail: details[place], // Add associated detail
               };
-              localCache[country] = location; // Cache the coordinates
+              localCache[place] = location; // Cache the coordinates
               return location;
             }
           } catch (error) {
@@ -62,10 +58,14 @@ const DynamicMap = ({ countries, details }) => {
       setMarkers(coords.filter(Boolean)); // Update state with valid coordinates
     };
 
-    if (countries.length > 0 && Object.keys(details).length > 0) {
+    if (
+      countries.length > 0 &&
+      cities.length > 0 &&
+      Object.keys(details).length > 0
+    ) {
       fetchCoordinates();
     }
-  }, [countries, details]); // Depend on both countries and details
+  }, [countries, cities, details]); // Depend on both countries, cities, and details
 
   return (
     <div style={{ height: "500px", width: "100%" }}>
@@ -77,10 +77,10 @@ const DynamicMap = ({ countries, details }) => {
           style={{ height: "500px", width: "100%" }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {markers.map(({ lat, lon, country, detail }, idx) => (
+          {markers.map(({ lat, lon, place, detail }, idx) => (
             <Marker key={idx} position={[lat, lon]}>
               <Popup>
-                <strong>{country}</strong>
+                <strong>{place}</strong>
                 <br />
                 {detail?.join(" ")}{" "}
                 {/* Assuming detail is an array of sentences */}

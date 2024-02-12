@@ -16,6 +16,7 @@ const HomePage = () => {
   const [details, setDetails] = useState({});
   const [showYear, setShowYear] = useState("");
   const [showLoadingBar, setShowLoadingBar] = useState(false);
+  const [cities, setCities] = useState([]); // Added state for cities
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,7 +38,8 @@ const HomePage = () => {
       }
 
       const verifyData = await verifyResponse.json();
-      setLocations(verifyData.cities);
+      setLocations(verifyData.cities); // Assuming this is where you get cities from
+      setCities(verifyData.cities); // Now storing cities in state
       setCountryLocations(verifyData.countries);
       setDetails(verifyData.details);
 
@@ -64,6 +66,7 @@ const HomePage = () => {
               height={248} // Adjust based on your image's dimensions or desired display size
               style={{ objectFit: "cover" }}
               className="m-10"
+              priority={false}
             />
           </div>
         </div>
@@ -109,7 +112,11 @@ const HomePage = () => {
           dangerouslySetInnerHTML={{ __html: content }}
           className="text-white"
         />
-        <DynamicMap countries={countryLocations} details={details} />
+        <DynamicMap
+          countries={countryLocations}
+          cities={cities}
+          details={details}
+        />
       </div>
       <Footer />
     </div>
