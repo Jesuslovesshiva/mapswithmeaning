@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import dynamic from "next/dynamic";
+
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  { ssr: false }
+);
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  { ssr: false }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+  ssr: false,
+});
 
 const DynamicMap = ({ countries, details }) => {
   const [markers, setMarkers] = useState([]);
@@ -52,23 +68,28 @@ const DynamicMap = ({ countries, details }) => {
   }, [countries, details]); // Depend on both countries and details
 
   return (
-    <MapContainer
-      center={[20, 0]}
-      zoom={2}
-      scrollWheelZoom={false}
-      style={{ height: "500px", width: "100%" }}
-    >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {markers.map(({ lat, lon, country, detail }, idx) => (
-        <Marker key={idx} position={[lat, lon]}>
-          <Popup>
-            <strong>{country}</strong>
-            <br />
-            {detail?.join(" ")} {/* Assuming detail is an array of sentences */}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <div style={{ height: "500px", width: "100%" }}>
+      {typeof window !== "undefined" && (
+        <MapContainer
+          center={[20, 0]}
+          zoom={2}
+          scrollWheelZoom={false}
+          style={{ height: "500px", width: "100%" }}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          {markers.map(({ lat, lon, country, detail }, idx) => (
+            <Marker key={idx} position={[lat, lon]}>
+              <Popup>
+                <strong>{country}</strong>
+                <br />
+                {detail?.join(" ")}{" "}
+                {/* Assuming detail is an array of sentences */}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      )}
+    </div>
   );
 };
 

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
 import Footer from "./footer";
 
 const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
