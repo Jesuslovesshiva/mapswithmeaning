@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "18": "^0.0.0",
+    "@fontsource/alumni-sans": "^5.0.18",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@types/node": "20.11.17",
     "@types/react": "18.2.55",

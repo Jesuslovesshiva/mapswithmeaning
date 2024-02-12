@@ -1,3 +1,4 @@
+// Inside DynamicMap component
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
@@ -20,16 +21,15 @@ const DynamicMap = ({ countries, details }) => {
 
           try {
             const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+              `http://localhost:5000/geocode?location=${encodeURIComponent(
                 country
-              )}&key=AIzaSyBZ3peBslyDJvye5KZF5ACHHmjgHlROryI`
+              )}`
             );
             const data = await response.json();
-            if (data && data.results.length > 0) {
-              const { lat, lng } = data.results[0].geometry.location; // Extract lat and lng from geometry.location
+            if (data && data.length > 0) {
               const location = {
-                lat: parseFloat(lat),
-                lon: parseFloat(lng),
+                lat: parseFloat(data[0].lat),
+                lon: parseFloat(data[0].lon),
                 country, // Add country name
                 detail: details[country], // Add associated detail
               };

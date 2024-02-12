@@ -3,5 +3,50 @@
 @tailwind utilities;
 
 :root {
-  background: black;
+  background: #374151;
+}
+
+._it4vx {
+  height: 3px;
+  background: #00bfff -webkit-gradient(linear, left top, right top, from(#00bfff), color-stop(#20b2aa), color-stop(#7fffd4), color-stop(#afeeee), to(#00bfff));
+  background: #00bfff -webkit-linear-gradient(left, #00bfff, #20b2aa, #7fffd4, #afeeee, #00bfff);
+  background: #00bfff
+    linear-gradient(to right, #00bfff, #20b2aa, #7fffd4, #afeeee, #00bfff);
+  background-size: 500%;
+  -webkit-animation: 2s linear infinite LoadingBarProgress,
+    0.5s ease-out LoadingBarEnter;
+  animation: 2s linear infinite LoadingBarProgress,
+    0.5s ease-out LoadingBarEnter;
+  -webkit-transform-origin: left;
+  transform-origin: left;
+  width: 100%;
+}
+._72fik {
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 12;
+}
+@keyframes LoadingBarProgress {
+  0% {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 125% 0;
+  }
+}
+@keyframes LoadingBarEnter {
+  0% {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+  }
+  to {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+}
+
+body {
+  font-family: "Alumni Sans", sans-serif;
 }
