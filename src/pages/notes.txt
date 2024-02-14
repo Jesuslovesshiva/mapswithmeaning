@@ -1,0 +1,20 @@
+///////////// NOTES 
+12.02.24
+
+- history border integration
+
+- picture api? of historic events and/or people
+
+// integrated db
+
+- get hyperlinks from wiki instead of plain detail text
+
+- new marker icon
+    -different markers for different events
+//- favicon
+
+- hide api keys in env variables
+
+
+
+

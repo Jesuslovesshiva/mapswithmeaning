@@ -32,9 +32,9 @@ const DynamicMap = ({ countries, cities, details }) => {
 
           try {
             const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+              `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
                 place
-              )}&key=AIzaSyBZ3peBslyDJvye5KZF5ACHHmjgHlROryI`
+              )}`
             );
             const data = await response.json();
             if (data && data.results.length > 0) {
@@ -80,10 +80,36 @@ const DynamicMap = ({ countries, cities, details }) => {
           {markers.map(({ lat, lon, place, detail }, idx) => (
             <Marker key={idx} position={[lat, lon]}>
               <Popup>
-                <strong>{place}</strong>
+                <strong style={{ fontSize: "1.1rem" }}>{place}</strong>
                 <br />
-                {detail?.join(" ")}{" "}
-                {/* Assuming detail is an array of sentences */}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: detail
+                      ?.join(" ")
+                      // Remove dash and space after it for simple cases
+                      .replace(/ – /g, " ")
+
+                      .replace(
+                        /(\. )((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(–\d{1,2})?)/g,
+                        `$1<br />$2`
+                      )
+                      // Format date ranges to include the entire range in bold and add a line break after it
+                      .replace(
+                        /((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})–(\d{1,2})/g,
+                        `<strong>$1–$3</strong><br />`
+                      )
+                      // Check if the string starts with a date, make it bold, and add a line break after it for single dates
+                      .replace(
+                        /^((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})/g,
+                        `<strong>$1</strong><br />`
+                      )
+                      // Also, find single dates after a period and apply the same formatting
+                      .replace(
+                        /(\. )((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})/g,
+                        `$1<br /><strong>$2</strong><br />`
+                      ),
+                  }}
+                />
               </Popup>
             </Marker>
           ))}
