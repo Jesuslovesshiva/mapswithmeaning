@@ -76,22 +76,21 @@ const HomePage = () => {
           <span className="absolute top-30 left-11 text-gray-500 text-3xl font-bold hide-on-small-screen">
             Year - {showYear}
           </span>
-
-          <form onSubmit={handleSubmit} className=" max-w-md">
+          <form onSubmit={handleSubmit} className="max-w-md">
             <div className="relative text-gray-600">
               <input
-                type="text"
+                type="number"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
                 placeholder="Enter a year (e.g., 1519)"
                 style={{ fontFamily: "arial" }}
                 maxLength="4"
-                pattern="\d{1,4}"
                 min="900"
                 max="2024"
                 title=""
                 required
                 className="h-10 pl-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-100 bg-grey-300 mb-10"
+                onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
               />
               <button
                 type="submit"
