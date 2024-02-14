@@ -84,30 +84,34 @@ const DynamicMap = ({ countries, cities, details }) => {
                 <br />
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: detail
-                      ?.join(" ")
-                      // Remove dash and space after it for simple cases
-                      .replace(/ – /g, " ")
+                    __html: (() => {
+                      const detailWithReplacements = detail
+                        ?.join(" ")
+                        // Remove dash and space after it for simple cases
+                        .replace(/ – /g, " ")
+                        // Format date ranges to include the entire range in bold, and add a line break after it
+                        .replace(
+                          /((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})–(\d{1,2})/g,
+                          `<strong>$1–$3</strong><br />`
+                        )
+                        // Format single dates and add a line break after it
+                        .replace(
+                          /(\.|^|\s)((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})(?=\s|$|\.)/g,
+                          (match, p1, p2) =>
+                            `${
+                              p1 !== "." ? p1 : ""
+                            }<br /><strong>${p2}</strong><br />`
+                        );
 
-                      .replace(
-                        /(\. )((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(–\d{1,2})?)/g,
-                        `$1<br />$2`
-                      )
-                      // Format date ranges to include the entire range in bold and add a line break after it
-                      .replace(
-                        /((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})–(\d{1,2})/g,
-                        `<strong>$1–$3</strong><br />`
-                      )
-                      // Check if the string starts with a date, make it bold, and add a line break after it for single dates
-                      .replace(
-                        /^((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})/g,
-                        `<strong>$1</strong><br />`
-                      )
-                      // Also, find single dates after a period and apply the same formatting
-                      .replace(
-                        /(\. )((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})/g,
-                        `$1<br /><strong>$2</strong><br />`
-                      ),
+                      // Remove the first <br> if it directly follows the opening <span> tag
+                      // This is a more targeted approach to ensure only the very first <br> tag after <span> is removed
+                      const firstBrRemoved = detailWithReplacements.replace(
+                        /^<br \/>/,
+                        ""
+                      );
+
+                      return firstBrRemoved;
+                    })(),
                   }}
                 />
               </Popup>
