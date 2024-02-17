@@ -1,6 +1,8 @@
 ///////////// NOTES 
 12.02.24
 
+- expand cityToEmpire
+
 - history border integration
 
 - picture api? of historic events and/or people
@@ -18,6 +20,7 @@
 - change mongodb to not receive ip 0.0.0...
 
 - enable continents and empires
+
 
 
 
