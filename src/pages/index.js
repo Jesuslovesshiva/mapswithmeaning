@@ -47,7 +47,7 @@ const HomePage = () => {
       setShowYear(year);
       setYear(""); // This line clears the input field
     } catch (error) {
-      console.error("Failed to verify locations:", error);
+      // console.error("Failed to verify locations:", error);
     }
 
     setLoading(false);

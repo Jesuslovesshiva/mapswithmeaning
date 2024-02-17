@@ -1,25 +1,34 @@
 ///////////// NOTES 
-12.02.24
 
-- expand cityToEmpire
+    ////// HOW TO DEPLOY
+        change url to https://mapswithmeaning.lm.r.appspot.com/ at DyamicMap.js and index.js
+        change # if __name__ == '__main__':
+                #   app.run(debug=True, threaded=True) at app.py
+        
 
-- history border integration
+        
+    ////// TO-DO
+        12.02.24
 
-- picture api? of historic events and/or people
+        - expand cityToEmpire
 
-// integrated db
+        - history border integration
 
-- get hyperlinks from wiki instead of plain detail text
+        - picture api? of historic events and/or people
 
-- new marker icon
-    -different markers for different events
-//- favicon
+        // integrated db
 
-- hide api keys in env variables
+        - get hyperlinks from wiki instead of plain detail text
 
-- change mongodb to not receive ip 0.0.0...
+        - new marker icon
+            -different markers for different events
+        //- favicon
 
-- enable continents and empires
+        - hide api keys in env variables
+
+        - change mongodb to not receive ip 0.0.0...
+
+        - enable continents and empires
 
 
 
