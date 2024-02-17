@@ -53,7 +53,7 @@ const Footer = () => {
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
             Google Maps Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information | v1.21
+            retrieving historical information | v1.22
           </span>
         </p>
         {/* <div className="footer-menu">
