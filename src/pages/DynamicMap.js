@@ -54,6 +54,7 @@ const patternsToExclude = [
   /\nReligion/g,
 ];
 
+// test
 const DynamicMap = ({ countries, cities, details }) => {
   const [markers, setMarkers] = useState([]);
 
