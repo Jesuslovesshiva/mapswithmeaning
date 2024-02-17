@@ -19,39 +19,19 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 // Reverse mapping from city back to empire
 const cityToEmpire = {
   Bulgan: "Mongol Empire",
-  Brescia: "Roman Empire",
+  Viterbo: "Roman Empire",
   Panguipulli: "Americans",
   Sultanbeyli: "Byzantine Empire",
-  Colchester: "Britain",
-  Jeonju: "Korea",
-  Huehuetenango: "Central America",
-  Buraydah: "Arabian Empire",
 };
 
 const patternsToExclude = [
   /Events\s*By\s*place/g,
-  /Cities\s*and\s*towns/g,
   /By\s*topic/g,
   /Bulgan/g,
-  /Buraydah/g,
   /Levant/g,
   /Panguipulli/g,
   /Sultanbeyli/g,
-  /Colchester/g,
-  /Jeonju/g,
-  /Huehuetenango/g,
-  /Brescia/g,
-  /China\n/g,
-  /\n(January|February|March|April|May|June|July|August|September|October|November|December)(\s+\d{1,2})? – /g,
-  /Asia\n/g,
-  /\nSpring/g,
-  /\nAutumn/g,
-  /\nWinter/g,
-  /\nSummer/g,
-  /Europe\n/g,
-  /\nEurope/g,
-  /Japan\n/g,
-  /\nReligion/g,
+  /Viterbo/g,
 ];
 
 const DynamicMap = ({ countries, cities, details }) => {
@@ -122,11 +102,7 @@ const DynamicMap = ({ countries, cities, details }) => {
           {markers.map(({ lat, lon, place, detail }, idx) => (
             <Marker key={idx} position={[lat, lon]}>
               <Popup>
-                <strong
-                  style={{ fontSize: "1.1rem" }}
-                  data-empire={cityToEmpire[place] || place}
-                >
-                  {" "}
+                <strong style={{ fontSize: "1.1rem" }}>
                   {cityToEmpire[place] || place}{" "}
                   {/* Use the empire name if available, otherwise use the city name */}
                 </strong>
@@ -136,36 +112,16 @@ const DynamicMap = ({ countries, cities, details }) => {
                     __html: (() => {
                       // Join detail array into a string and clean specific phrases
                       let detailsString = detail?.join(" ") || "";
-
-                      detailsString = detailsString.replace(
-                        /(\b(\w+)\s+)\2/gi,
-                        "$2"
-                      );
-                      // First, remove all patterns to exclude from the detailsString.
                       patternsToExclude.forEach((pattern) => {
                         detailsString = detailsString.replace(pattern, "");
                       });
 
-                      // After removing all patterns, then check if adjustments related to the Roman Empire should be applied.
-                      if (cityToEmpire[place] === "Roman Empire") {
-                        // Replace specific phrases with correct ones related to the Roman Empire.
-                        // These replacements are now outside of the patternsToExclude loop to avoid repeated applications.
-                        detailsString = detailsString.replace(
-                          /In the , /g,
-                          "In the Roman Empire, "
-                        );
-                        detailsString = detailsString.replace(
-                          /reach the ./g,
-                          "reach the Roman Empire."
-                        );
-                      }
-
                       // Additional replacements for formatting
-                      (detailsString = detailsString
+                      detailsString = detailsString
                         .replace(/ – /g, " ")
                         .replace(
-                          /(^|\s)((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})(–)(\d{1,2})/g,
-                          `<br /><strong>$2–$5</strong><br />`
+                          /((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})–(\d{1,2})/g,
+                          `<strong>$1–$3</strong><br />`
                         )
                         .replace(
                           /(^|\.\s+)((January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:-\d{1,2})?\.?)/g,
@@ -173,11 +129,8 @@ const DynamicMap = ({ countries, cities, details }) => {
                             `${
                               p1.trim().length > 0 ? p1 + "<br />" : ""
                             }<strong>${p2.trim()}</strong><br />`
-                        )),
-                        (detailsString = detailsString.replace(
-                          /^<br\s*\/?>/i,
-                          ""
-                        ));
+                        );
+                      detailsString = detailsString.replace(/^<br\s*\/?>/i, "");
 
                       return detailsString;
                     })(),

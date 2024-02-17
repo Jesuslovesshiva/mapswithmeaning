@@ -24,14 +24,11 @@ const HomePage = () => {
     setShowLoadingBar(true); // Show loading bar when API call starts
 
     try {
-      const verifyResponse = await fetch(
-        "https://mapswithmeaning.lm.r.appspot.com/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ year: year.trim() }),
-        }
-      );
+      const verifyResponse = await fetch("http://localhost:5000/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year: year.trim() }),
+      });
 
       if (!verifyResponse.ok) {
         throw new Error(`HTTP error! status: ${verifyResponse.status}`);
@@ -56,14 +53,14 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="flex flex-col mb-12 bg-gray-700">
+      <div className="flex flex-col mb-12 bg-custom-teal">
         <div className="flex flex-col items-center">
           <div className="w-64 h-62 flex justify-center items-center">
             <Image
               src="/png/logo-no-background.png"
               alt="Logo"
-              width={240} // Adjust based on your image's dimensions or desired display size
-              height={248} // Adjust based on your image's dimensions or desired display size
+              width={240}
+              height={248}
               style={{ objectFit: "cover" }}
               className="m-10"
               priority={false}
@@ -85,7 +82,7 @@ const HomePage = () => {
                 placeholder="Enter a year (e.g., 1519)"
                 style={{ fontFamily: "arial" }}
                 maxLength="4"
-                min="900"
+                min="1"
                 max="2024"
                 title=""
                 required

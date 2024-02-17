@@ -5,7 +5,7 @@ import { faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-700 text-white ">
+    <footer className="bg-custom-teal text-white ">
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
         <h3 className="text-3xl font-medium">
           Teocalli - A Map for every Year{" "}

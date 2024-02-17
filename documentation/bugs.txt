@@ -1,0 +1,14 @@
+///////////// NOTES 
+15.02.24
+BUGS
+
+17.02.
+
+-if its 'February 3.' dont put it in strong
+
+-November 8–9 in the middle of a text still dont have a br after and before (but are strong)
+
+-make "August 26, 1670" a date format, because on 1671 it has a br mistake
+
+-"March 16
+–April 6" gets a br but becuase of 1 digit

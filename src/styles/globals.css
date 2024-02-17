@@ -1,9 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Hide the up and down arrows for input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* For Firefox */
+}
 
 :root {
-  background: #374151;
+  --custom-orange: theme("colors.custom-orange");
+  --custom-peach: theme("colors.custom-peach");
+  --custom-white: theme("colors.custom-white");
+  --custom-teal: theme("colors.custom-teal"); /* bg right now */
+  --custom-black: theme("colors.custom-black");
 }
 
 ._it4vx {

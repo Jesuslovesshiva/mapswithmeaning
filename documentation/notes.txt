@@ -15,6 +15,9 @@
 
 - hide api keys in env variables
 
+- change mongodb to not receive ip 0.0.0...
+
+- enable continents and empires
 
 
 
