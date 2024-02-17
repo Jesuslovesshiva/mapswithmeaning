@@ -71,7 +71,7 @@ const DynamicMap = ({ countries, cities, details }) => {
 
           try {
             const response = await fetch(
-              `http://127.0.0.1:5000/geocode?address=${encodeURIComponent(
+              `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
                 place
               )}`
             );
