@@ -1,4 +1,9 @@
-Maps with Meaning
+Maps with Meaning - Teocalli
+
+Frontend with Next.js, Backend is written with Flask :)
+
+https://teocalli.netlify.app/
+
 Overview
 
 Maps with Meaning is an innovative geospatial web application designed to provide users with enriched geographical and historical context. Leveraging advanced geocoding technologies and data-driven insights, this application delivers a seamless integration of locational intelligence and narrative significance, enhancing the user experience with a multifaceted view of global events.
