@@ -34,8 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-/ b a c k u p s  
- / b a c k u p s  
+/ b a c k u p s 
+ 
+ / b a c k u p s 
+ 
  / d o c u m e n t a t i o n 
 
 documentation/
@@ -43,5 +45,6 @@ documentation/
 
 /backups
 
-/documentation 
+/documentation
+ 
  

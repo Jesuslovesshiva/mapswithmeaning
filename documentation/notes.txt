@@ -4,23 +4,29 @@
         change url to https://mapswithmeaning.lm.r.appspot.com/ at DyamicMap.js and index.js
         change # if __name__ == '__main__':
                 #   app.run(debug=True, threaded=True) at app.py
+        open cloud sdk shell -> cd path -> gcloud app deploy
         
 
         
     ////// TO-DO
+
+        20.02.204
+        - formatting 
+            (after view more) 
+            (summer/autmn etc) 
+            (long texts)
+        - dublicates
+
         19.02.24
-        - add cool view more button
-        - fix formatting on new code
-        - get pictures
+        - // add cool view more button 
+        - picture api? of historic events and/or people
         
 
         12.02.24
 
-        - expand cityToEmpire
+        // expand cityToEmpire
 
         - history border integration
-
-        - picture api? of historic events and/or people
 
         // integrated db
 
@@ -34,7 +40,7 @@
 
         - change mongodb to not receive ip 0.0.0...
 
-        - enable continents and empires
+        // enable continents and empires
 
 
 

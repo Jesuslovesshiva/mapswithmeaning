@@ -4,7 +4,7 @@ import { faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
-    <footer className="bg-custom-teal text-white ">
+    <footer className="bg-custom-bg text-white ">
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
         <h3 className="text-3xl font-medium">
           Teocalli - A Map for every Year{" "}
@@ -20,9 +20,14 @@ const Footer = () => {
           <li className="mx-2">
             <a
               href="https://www.instagram.com/kunstmacht/"
-              className=" p-3 rounded-full hover:text-cyan-500"
+              className=" p-3 rounded-full hover:text-cyan-500
+              "
             >
-              <FontAwesomeIcon icon={faInstagram} />
+              <FontAwesomeIcon
+                icon={faInstagram}
+                className="text-6xl"
+                size="3x"
+              />
             </a>
           </li>
           <li className="mx-2">
@@ -30,7 +35,7 @@ const Footer = () => {
               href="https://github.com/Jesuslovesshiva"
               className=" p-3 rounded-full hover:text-cyan-500"
             >
-              <FontAwesomeIcon icon={faGithub} />
+              <FontAwesomeIcon icon={faGithub} className="text-2xl" />
             </a>
           </li>
 
@@ -52,7 +57,7 @@ const Footer = () => {
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
             Google Maps Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information | v1.23
+            retrieving historical information | v1.24
           </span>
         </p>
         {/* <div className="footer-menu">

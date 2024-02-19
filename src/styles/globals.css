@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* Hide the up and down arrows for input type number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -17,7 +18,12 @@ input[type="number"] {
   --custom-peach: theme("colors.custom-peach");
   --custom-white: theme("colors.custom-white");
   --custom-teal: theme("colors.custom-teal"); /* bg right now */
+  --custom-bg: theme("colors.custom-bg"); /* bg right now */
   --custom-black: theme("colors.custom-black");
+}
+
+a {
+  color: var(--custom-peach) !important;
 }
 
 ._it4vx {
@@ -81,23 +87,175 @@ body {
   }
 }
 
-/* .sidebar-box {
+.SMN_effect-32 a {
+  padding: 0;
+  z-index: 1;
 }
-.sidebar-box .read-more {
-  z-index: 99;
-  width: 100%;
-  position: relative; 
-  overflow: hidden; 
-  color: black;
+
+.SMN_effect-32 a:hover {
+  color: rgba(0, 128, 128, 0.9);
+
+  -ms-animation: circleOpacity forwards 1s;
+  -moz-animation: circleOpacity forwards 1s;
+  -webkit-animation: circleOpacity forwards 1s;
+  animation: circleOpacity forwards 1s;
 }
-.sidebar-box .read-more::after {
-  content: "";
+
+@keyframes circleOpacity {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.SMN_effect-32 a:before,
+.SMN_effect-32 a:after {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  content: "◯";
   display: block;
   width: 100%;
-  height: 100%;
+  font-size: 0px;
+  color: var(--custom-peach);
+  text-align: center;
+  z-index: -1;
+}
+
+.SMN_effect-32 a:hover:before {
+  animation: circledrop 1s;
+  -ms-animation: circledrop 1s;
+  -moz-animation: circledrop 1s;
+  -webkit-animation: circledrop 1s;
+}
+
+@keyframes circledrop {
+  0% {
+    opacity: 1;
+    font-size: 0;
+    top: 0;
+  }
+  100% {
+    opacity: 0;
+    font-size: 80px;
+    top: -50px;
+  }
+}
+.hover15 figure {
+  position: relative;
+}
+.hover15 figure::before {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+.hover15 figure:hover::before {
+  -webkit-animation: circle 0.55s;
+  animation: circle 0.55s;
+}
+@-webkit-keyframes circle {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+@keyframes circle {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+
+.button-1 {
+  background-color: transparent;
+  -webkit-transition: all 0.05s ease-in-out;
+  transition: all 0.05s ease-in-out;
+  color: var(--custom-peach);
+  caret-color: transparent;
+}
+.button-1:hover {
+  box-shadow: 0 0 5px 0 #fff inset, 0 0 20px 1px #fff;
+  border: 0px solid #fff;
+}
+.button-2 {
+  box-shadow: 0 0 5px 0 #fff inset, 0 0 20px 1px #fff;
+  border: 0px solid #fff;
+}
+
+.SMN_effect-64 a {
+  position: relative;
+  z-index: 2;
+}
+
+.SMN_effect-64 a:before,
+.SMN_effect-64 a:after {
+  width: 80px;
+  height: 80px;
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+  display: block;
+  top: 0;
   bottom: 0;
-  left: 0;
-  background-image: linear-gradient(to bottom, transparent 60%, white);
-  pointer-events: none; Allows text selection behind the gradient
-} */
+  margin: auto;
+  right: -10%;
+  transition: all 1s cubic-bezier(0.45, 0.76, 0.58, 0.94);
+}
+
+.SMN_effect-64 a:before {
+  background-color: var(
+    --custom-bg
+  ); /* Replace '--custom-bg' with the actual color if it's not a CSS variable */
+  z-index: -1;
+}
+
+.SMN_effect-64 a:after {
+  background-color: #fff; /* Change this as necessary */
+  z-index: -2;
+  transform: scale(0.9);
+}
+
+/* Simulated hover effect */
+.simulated-hover-64 a:before {
+  /* Properties if needed, else remove this part */
+}
+
+.simulated-hover-64 a:after {
+  transform: scale(1) translate(6px);
+}
+
+.opacity-hidden {
+  opacity: 0;
+  transition: opacity 1s ease; /* Smooth transition to visible */
+}
+
+.opacity-visible {
+  opacity: 1;
+  transition: opacity 1s ease; /* Ensure the transition is smooth */
+}

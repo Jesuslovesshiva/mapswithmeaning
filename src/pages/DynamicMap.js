@@ -135,7 +135,7 @@ const DynamicMap = ({ countries, cities, details }) => {
 
           try {
             const response = await fetch(
-              `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
+              `http://localhost:5000/geocode?address=${encodeURIComponent(
                 place
               )}`
             );
@@ -217,8 +217,9 @@ const DynamicMap = ({ countries, cities, details }) => {
                           {parse(formatText(remainingText))}
                         </span>
                         <br />
+
                         <div
-                          className="text-center transform transition-transform hover:scale-110 text-custom-orange cursor-pointer mt-2"
+                          className=" transform transition-transform  text-custom-peach cursor-pointer mt-2 menu align-center expanded text-center SMN_effect-32"
                           // onMouseEnter={(e) =>
                           //   (e.target.style.filter = "brightness(100%)")
                           // }
@@ -231,7 +232,12 @@ const DynamicMap = ({ countries, cities, details }) => {
                             {" "}
                             {/* Attach the ref to your popup or expandable element */}
                             <strong onClick={() => toggleDetail(idx)}>
-                              {expandedDetails[idx] ? "View Less" : "View More"}
+                              <a data-hover="View more">
+                                {expandedDetails[idx]
+                                  ? "View Less"
+                                  : "View More"}
+                              </a>
+
                               <span
                                 className="transform transition-transform ml-2"
                                 style={{

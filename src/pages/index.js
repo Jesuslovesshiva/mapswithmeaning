@@ -16,13 +16,16 @@ const HomePage = () => {
   const [details, setDetails] = useState({});
   const [showYear, setShowYear] = useState("");
   const [showLoadingBar, setShowLoadingBar] = useState(false);
-  const [cities, setCities] = useState([]); // Added state for cities
+  const [cities, setCities] = useState([]);
+  const [isFilled, setIsFilled] = useState(false);
+  const [simulateHoverEffect, setSimulateHoverEffect] = useState(false); // New state for simulating hover effect
+  const [formInitiallySubmitted, setFormInitiallySubmitted] = useState(false);
 
   const fetchAndSetLocations = async (chosenYear) => {
     setLoading(true);
     setShowLoadingBar(true);
     try {
-      const response = await fetch("https://mapswithmeaning.lm.r.appspot.com", {
+      const response = await fetch("http://localhost:5000/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ year: chosenYear.trim() }),
@@ -51,14 +54,36 @@ const HomePage = () => {
     fetchAndSetLocations(randomYear.toString()); // Fetch and set locations for the random year
   };
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    fetchAndSetLocations(year); // Use the existing year state
+    setFormInitiallySubmitted(true); // Set the opacity controlling state to true
+    setIsFilled(false); // Reset the filled state
+    setSimulateHoverEffect(true); // Trigger the simulated hover effect
+
+    setTimeout(() => {
+      setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
+    }, 1000); // Adjust the duration according to your needs
+
+    if (year.trim().length > 0) {
+      fetchAndSetLocations(year);
+      // Clear the year if necessary, based on your app's behavior:
+      setYear(""); // Optional: clear the field after submission
+    }
+  };
+
+  // useEffect(() => {
+  //   setIsFilled(year.trim().length > 0);
+  // }, [year]); // This useEffect will update isFilled whenever 'year' changes
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    setYear(inputValue); // This keeps the original logic intact
+    setIsFilled(inputValue.length > 0); // Additionally sets isFilled based on whether the input has content
   };
 
   return (
     <div>
-      <div className="flex flex-col mb-12 bg-custom-teal">
+      <div className="flex flex-col mb-8 bg-custom-bg">
         <div className="flex flex-col items-center">
           <div className="w-64 h-62 flex justify-center items-center">
             <Image
@@ -74,18 +99,27 @@ const HomePage = () => {
         </div>
 
         <div className="w-full flex justify-between items-center px-8 pb-8">
-          {/* Display showYear directly */}
-          <div className="text-gray-500 text-3xl font-bold pl-10 on-small-screen flex items-center">
-            <div className="inline hide-on-small-screen mr-2">Year </div>{" "}
-            {showYear}
+          <div
+            className={`text-gray-500 text-3xl font-bold pl-10 on-small-screen flex items-center ${
+              formInitiallySubmitted ? "opacity-visible" : "opacity-hidden"
+            }`}
+          >
+            {" "}
+            <div
+              className={`SMN_effect-64 ${
+                simulateHoverEffect ? "simulated-hover-64" : ""
+              }`}
+            >
+              <a>Year {showYear}</a>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="max-w-md">
-            <div className="input relative text-gray-600">
+          <form onSubmit={handleSubmit} className="max-w-md menu align-center">
+            <div className="input relative text-gray-600 menu align-center">
               <input
                 type="number"
                 value={year}
-                onChange={(e) => setYear(e.target.value)}
+                onChange={handleChange}
                 placeholder="Enter a year (e.g., 1519)"
                 style={{ fontFamily: "arial" }}
                 maxLength="4"
@@ -93,7 +127,10 @@ const HomePage = () => {
                 max="2024"
                 title=""
                 required
-                className="h-10 pl-5 pr-10 w-full rounded-full text-sm focus:outline-none border border-gray-100 bg-grey-300"
+                className={`h-10 pl-5 pr-10 w-full rounded-full text-sm focus:outline-none border
+                text-center SMN_effect-34  border-gray-100 bg-grey-300 button-1 ${
+                  isFilled ? "button-2" : "button-1"
+                }`} // Apply conditional class for hover effects
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
               />
               <button
@@ -109,18 +146,23 @@ const HomePage = () => {
               </button>
             </div>
           </form>
-          <button
-            onClick={handleDiceClick}
-            className="p-2 pr-10 on-small-screen"
-          >
-            <Image
-              src="/dice.png"
-              alt="Roll Dice"
-              width={40}
-              height={40}
-              style={{ objectFit: "contain" }}
-            />
-          </button>
+          <div className="">
+            <button
+              onClick={handleDiceClick}
+              className="p-2 pr-10 on-small-screen hover15"
+            >
+              {" "}
+              <figure>
+                <Image
+                  src="/dice.png"
+                  alt="Roll Dice"
+                  width={40}
+                  height={40}
+                  style={{ objectFit: "contain" }}
+                />
+              </figure>
+            </button>
+          </div>
         </div>
 
         {showLoadingBar && <span className="_it4vx _72fik"></span>}
