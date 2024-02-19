@@ -25,11 +25,14 @@ const HomePage = () => {
     setLoading(true);
     setShowLoadingBar(true);
     try {
-      const response = await fetch("http://localhost:5000/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ year: chosenYear.trim() }),
-      });
+      const response = await fetch(
+        "https://mapswithmeaning.lm.r.appspot.com/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ year: chosenYear.trim() }),
+        }
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
