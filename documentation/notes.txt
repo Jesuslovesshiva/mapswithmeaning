@@ -8,6 +8,12 @@
 
         
     ////// TO-DO
+        19.02.24
+        - add cool view more button
+        - fix formatting on new code
+        - get pictures
+        
+
         12.02.24
 
         - expand cityToEmpire

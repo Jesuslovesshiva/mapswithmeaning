@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link"; // Use Next.js's Link component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
 
@@ -53,7 +52,7 @@ const Footer = () => {
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
             Google Maps Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information | v1.22
+            retrieving historical information | v1.23
           </span>
         </p>
         {/* <div className="footer-menu">
