@@ -5,7 +5,7 @@ Frontend with Next.js, Backend is written with Flask
 https://teocalli.netlify.app/
 
 1.25
- - Frontend update
+ - Frontend update + wiki img
     
         - some style/hover changes
         
