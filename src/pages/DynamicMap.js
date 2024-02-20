@@ -32,20 +32,17 @@ const cityToEmpire = {
   Amstetten: "Europe",
   Aksaray: "Byzantium",
   Yasuj: "Persia",
+  Taif: "Arabian Empire (Islamic Caliphate)",
 };
 
 const patternsToExclude = [
-  /\n(January|February|March|April|May|June|July|August|September|October|November|December)(\s+\d{1,2})? – /g,
+  // /\n(January|February|March|April|May|June|July|August|September|October|November|December)(\s+\d{1,2})? – /g,
   /Events\s*By\s*place/g,
   /Cities\s*and\s*towns/g,
   /By\s*topic/g,
   /China\n/g,
   /Asia\n/g,
-  // /\nSpring/g,
-  // /Spring/g,
-  // /\nAutumn/g,
-  // /\nWinter/g,
-  // /\nSummer/g,
+  /Sultanbeyli\s/g,
   /Europe\n/g,
   /\nEurope/g,
   /Japan\n/g,
@@ -58,18 +55,41 @@ const formatText = (text) => {
     text = text.replace(pattern, "");
   });
 
-  // Hyphen Handling
+  text = text.replace(/.:\u200a([^' ']+)/g, ". ");
+
+  // Remove patterns like ":\u200a177\u200a" and any text following until the end of the line
+  text = text.replace(/:\u200a([^' ']+)/g, ".");
+
+  text = text.replace(/(\.\s)/g, ". ");
+  text = text.replace(/(\.\s)/g, "");
   text = text.replace(/ – /g, " ");
 
-  // Date Range Formatting for same month ranges
+  // Formatting for month-to-month ranges without specific days
   text = text.replace(
-    /(\b(January|February|March|April|May|June|July|August|September|October|November|December|Spring|Summer|Winter|Autumn)\s+(\d{1,2})–(\d{1,2})\b)/g,
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)–(January|February|March|April|May|June|July|August|September|October|November|December)\b)/g,
     "<br /><strong>$1</strong><br />"
   );
 
-  // Date Formatting for single dates or different month date ranges after a period or at the start
+  // Date Range Formatting for same month ranges (keeping only months here)
   text = text.replace(
-    /(^|\.\s+)((January|February|March|April|May|June|July|August|September|October|November|December|Spring|Summer|Winter|Autumn)\s+(\d{1,2}(–\d{1,2})?))/g,
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})–(\d{1,2})\b)/g,
+    "<br /><strong>$1</strong><br />"
+  );
+
+  // Date Range Formatting for different month ranges with specific days
+  text = text.replace(
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})–(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b)/g,
+    "<br /><strong>$1</strong><br />"
+  );
+
+  text = text.replace(
+    /(^|\. )\b(Spring|Summer|Winter|Autumn)\b/g,
+    "$1<br /><strong>$2</strong><br />"
+  );
+  // Date Formatting for single dates or different month date ranges after a period or at the start
+  // Keeping only months in this pattern as well
+  text = text.replace(
+    /(^|\.\s+)((January|February|March|April|May|June|July|August|September|October|November|December)(\s+\d{1,2}(–\d{1,2})?)?)/g,
     "$1<br /><strong>$2</strong><br />"
   );
 
@@ -104,26 +124,13 @@ const splitTextAtSentenceBoundary = (text, maxWords) => {
 const DynamicMap = ({ countries, cities, details }) => {
   const [markers, setMarkers] = useState([]);
   const [expandedDetails, setExpandedDetails] = useState({}); // State to track which details are expanded
-  const detailRef = useRef(null); // Reference to the element
-  // This effect sets up the click listener
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (detailRef.current && !detailRef.current.contains(event.target)) {
-        // Set a timeout before closing the popup
-        setTimeout(() => {
-          setExpandedDetails({}); // Adjust this line to match how you're toggling details
-        }, 250);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []); // Include all dependencies here
+  const detailRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [showLoadingBar, setShowLoadingBar] = useState(false);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
+      setLoading(true); // Start the loading process
       const places = [...countries, ...cities];
       const localCache = {};
 
@@ -135,7 +142,7 @@ const DynamicMap = ({ countries, cities, details }) => {
 
           try {
             const response = await fetch(
-              `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
+              `https://mapswithmeaning.lm.r.appspot.com//geocode?address=${encodeURIComponent(
                 place
               )}`
             );
@@ -161,6 +168,7 @@ const DynamicMap = ({ countries, cities, details }) => {
       );
 
       setMarkers(coords.filter(Boolean));
+      setLoading(false); // End the loading process once all markers are set
     };
 
     if (
@@ -174,91 +182,127 @@ const DynamicMap = ({ countries, cities, details }) => {
 
   // Define toggleDetail function here
   const toggleDetail = (idx) => {
-    setExpandedDetails((prevDetails) => ({
-      ...prevDetails,
-      [idx]: !prevDetails[idx],
-    }));
+    setExpandedDetails({
+      // Reset all details to false (collapsed state)
+      ...Object.keys(expandedDetails).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {}),
+      // Set only the clicked detail to true (expanded state)
+      [idx]: false,
+    });
   };
   return (
-    <div style={{ height: "500px", width: "100%" }}>
-      {typeof window !== "undefined" && (
-        <MapContainer
-          center={[20, 0]}
-          zoom={3}
-          scrollWheelZoom={true}
-          style={{ height: "500px", width: "100%" }}
-          className="Map"
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {markers.map(({ lat, lon, place, detail }, idx) => {
-            const { initialText, remainingText } = splitTextAtSentenceBoundary(
-              Array.isArray(detail) ? detail.join(" ") : detail, // Modify this based on the structure of your detail data
-              60 // Max words before 'View More'
-            );
-            return (
-              <Marker key={idx} position={[lat, lon]}>
-                <Popup>
-                  <strong
-                    style={{ fontSize: "1.1rem" }}
-                    data-empire={cityToEmpire[place] || place}
-                  >
-                    {cityToEmpire[place] || place}
-                  </strong>
-                  <br />
-                  <div>
-                    {parse(formatText(initialText))}
-                    {remainingText && (
-                      <>
-                        <span
-                          style={{
-                            display: expandedDetails[idx] ? "inline" : "none",
-                          }}
-                        >
-                          {parse(formatText(remainingText))}
-                        </span>
-                        <br />
+    <div>
+      {loading && <span className="_it4vx _72fik"></span>}
+      <div style={{ height: "500px", width: "100%" }}>
+        {typeof window !== "undefined" && (
+          <MapContainer
+            center={[20, 0]}
+            zoom={3}
+            scrollWheelZoom={true}
+            style={{ height: "500px", width: "100%" }}
+            className="Map"
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {markers.map(({ lat, lon, place, detail }, idx) => {
+              const { initialText, remainingText } =
+                splitTextAtSentenceBoundary(
+                  Array.isArray(detail) ? detail.join(" ") : detail, // Modify this based on the structure of your detail data
+                  60 // Max words before 'View More'
+                );
+              // Apply formatText separately if needed or check the formatting
+              const formattedInitialText = parse(formatText(initialText));
+              let formattedRemainingText = parse(formatText(remainingText));
 
-                        <div
-                          className=" transform transition-transform  text-custom-peach cursor-pointer mt-2 menu align-center expanded text-center SMN_effect-32"
-                          // onMouseEnter={(e) =>
-                          //   (e.target.style.filter = "brightness(100%)")
-                          // }
-                          // onMouseLeave={(e) =>
-                          //   (e.target.style.filter = "brightness(80%)")
-                          // }
-                        >
-                          {/* Iterate over your items or just have one, for example */}
-                          <div ref={detailRef}>
-                            {" "}
-                            {/* Attach the ref to your popup or expandable element */}
-                            <strong onClick={() => toggleDetail(idx)}>
-                              <a data-hover="View more">
-                                {expandedDetails[idx]
-                                  ? "View Less"
-                                  : "View More"}
-                              </a>
+              // Check if initialText formatting ends properly, if not, adjust formattedRemainingText
+              if (
+                formattedInitialText &&
+                !initialText.endsWith("<br />") &&
+                remainingText
+              ) {
+                formattedRemainingText = (
+                  <>
+                    <br />
+                    {formattedRemainingText}
+                  </>
+                );
+              }
+              return (
+                <Marker
+                  key={idx}
+                  position={[lat, lon]}
+                  eventHandlers={{ click: () => toggleDetail(idx) }}
+                >
+                  <Popup>
+                    <strong
+                      style={{ fontSize: "1.1rem" }}
+                      data-empire={cityToEmpire[place] || place}
+                    >
+                      {cityToEmpire[place] || place}
+                    </strong>
+                    <br />
+                    <div>
+                      {formattedInitialText}
+                      {remainingText && (
+                        <>
+                          <span
+                            style={{
+                              display: expandedDetails[idx] ? "inline" : "none",
+                            }}
+                          >
+                            {formattedRemainingText}
+                          </span>
+                          <br />
 
-                              <span
-                                className="transform transition-transform ml-2"
-                                style={{
-                                  display: "inline-block",
-                                  transform: "scaleX(1.8) scaleY(1)",
-                                }}
+                          <div
+                            className=" transform transition-transform  text-custom-teal cursor-pointer mt-2 menu align-center expanded text-center SMN_effect-32"
+                            // onMouseEnter={(e) =>
+                            //   (e.target.style.filter = "brightness(100%)")
+                            // }
+                            // onMouseLeave={(e) =>
+                            //   (e.target.style.filter = "brightness(80%)")
+                            // }
+                          >
+                            {/* Iterate over your items or just have one, for example */}
+                            <div ref={detailRef}>
+                              {" "}
+                              {/* Attach the ref to your popup or expandable element */}
+                              <strong
+                                onClick={() =>
+                                  setExpandedDetails({
+                                    [idx]: !expandedDetails[idx],
+                                  })
+                                }
                               >
-                                &#709;
-                              </span>
-                            </strong>
+                                <a data-hover="View more">
+                                  {expandedDetails[idx]
+                                    ? "View Less"
+                                    : "View More"}
+                                </a>
+
+                                <span
+                                  className="transform transition-transform ml-2"
+                                  style={{
+                                    display: "inline-block",
+                                    transform: "scaleX(1.8) scaleY(1)",
+                                  }}
+                                >
+                                  &#709;
+                                </span>
+                              </strong>
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </Popup>
-              </Marker>
-            );
-          })}
-        </MapContainer>
-      )}
+                        </>
+                      )}
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            })}
+          </MapContainer>
+        )}
+      </div>
     </div>
   );
 };

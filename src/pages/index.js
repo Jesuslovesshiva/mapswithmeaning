@@ -7,23 +7,33 @@ const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
   ssr: false,
 });
 
+async function fetchYearImage(year) {
+  const response = await fetch(`http://localhost:5000/yearimage?year=${year}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  const data = await response.json();
+  return data;
+}
+
 const HomePage = () => {
   const [year, setYear] = useState("");
   const [content, setContent] = useState("");
   const [locations, setLocations] = useState([]);
   const [countryLocations, setCountryLocations] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [details, setDetails] = useState({});
   const [showYear, setShowYear] = useState("");
-  const [showLoadingBar, setShowLoadingBar] = useState(false);
+  // const [showLoadingBar, setShowLoadingBar] = useState(false);
   const [cities, setCities] = useState([]);
   const [isFilled, setIsFilled] = useState(false);
   const [simulateHoverEffect, setSimulateHoverEffect] = useState(false); // New state for simulating hover effect
   const [formInitiallySubmitted, setFormInitiallySubmitted] = useState(false);
+  const [yearImage, setYearImage] = useState("");
 
   const fetchAndSetLocations = async (chosenYear) => {
-    setLoading(true);
-    setShowLoadingBar(true);
+    // setLoading(true);
+    // setShowLoadingBar(true);
     try {
       const response = await fetch(
         "https://mapswithmeaning.lm.r.appspot.com/",
@@ -47,14 +57,21 @@ const HomePage = () => {
       // console.error("Failed to verify locations:", error);
     }
 
-    setLoading(false);
-    setShowLoadingBar(false); // Hide loading bar when API call ends
+    // setLoading(false);
+    // setShowLoadingBar(false); // Hide loading bar when API call ends
   };
 
   // Function to handle dice click
   const handleDiceClick = () => {
+    setFormInitiallySubmitted(true); // Set the opacity controlling state to true
+
     const randomYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1; // Generate a random year between 1 and 2024
     fetchAndSetLocations(randomYear.toString()); // Fetch and set locations for the random year
+    setSimulateHoverEffect(true); // Trigger the simulated hover effect
+
+    setTimeout(() => {
+      setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
+    }, 1000); // Adjust the duration according to your needs
   };
 
   // Handle form submission
@@ -69,9 +86,15 @@ const HomePage = () => {
     }, 1000); // Adjust the duration according to your needs
 
     if (year.trim().length > 0) {
-      fetchAndSetLocations(year);
-      // Clear the year if necessary, based on your app's behavior:
-      setYear(""); // Optional: clear the field after submission
+      await fetchAndSetLocations(year); // Fetch and set location data for the year
+      const imageData = await fetchYearImage(year); // Fetch the image data for the year
+      if (imageData && imageData.image_url !== "No image available") {
+        setYearImage(imageData.image_url); // Update the state with the new image URL
+      } else {
+        setYearImage(""); // Reset the image URL if none is available
+      }
+      setShowYear(year); // Update the displayed year
+      setYear(""); // Clear the input field after submission
     }
   };
 
@@ -86,34 +109,38 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="flex flex-col mb-8 bg-custom-bg">
+      <div className="forfooter flex flex-col mb-8 bg-custom-bg">
         <div className="flex flex-col items-center">
-          <div className="w-64 h-62 flex justify-center items-center">
-            <Image
-              src="/png/logo-no-background.png"
-              alt="Logo"
-              width={240}
-              height={248}
-              style={{ objectFit: "cover" }}
-              className="m-10"
-              priority={false}
-            />
+          <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center mainlogo mx-20 my-10 min-w-[400px] max-w-[600px]">
+              <Image
+                src="/png/logo-no-background.png"
+                alt="Logo"
+                sizes="41vw"
+                className="mainlogo"
+                style={{
+                  width: "41%",
+                  height: "auto",
+                }}
+                width={150}
+                height={150}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="w-full flex justify-between items-center px-8 pb-8">
+        <div className="row3 w-full flex justify-between items-center px-8 pb-8">
           <div
-            className={`text-gray-500 text-3xl font-bold pl-10 on-small-screen flex items-center ${
+            className={`text-gray-500 text-3xl font-bold pl-6 on-small-screen flex  ${
               formInitiallySubmitted ? "opacity-visible" : "opacity-hidden"
             }`}
           >
-            {" "}
             <div
               className={`SMN_effect-64 ${
                 simulateHoverEffect ? "simulated-hover-64" : ""
               }`}
             >
-              <a>Year {showYear}</a>
+              <a className="custom-underline">Year {showYear}</a>
             </div>
           </div>
 
@@ -130,9 +157,9 @@ const HomePage = () => {
                 max="2024"
                 title=""
                 required
-                className={`h-10 pl-5 pr-10 w-full rounded-full text-sm focus:outline-none border
-                text-center SMN_effect-34  border-gray-100 bg-grey-300 button-1 ${
-                  isFilled ? "button-2" : "button-1"
+                className={`inputClass h-10 pl-5 pr-10 w-full rounded-lg text-sm focus:outline-none border
+                text-center  border-gray-100 bg-grey-300 button-3 ${
+                  isFilled ? "button-3" : "button-3"
                 }`} // Apply conditional class for hover effects
                 onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
               />
@@ -151,6 +178,7 @@ const HomePage = () => {
           </form>
           <div className="">
             <button
+              onSubmit={handleSubmit}
               onClick={handleDiceClick}
               className="p-2 pr-10 on-small-screen hover15"
             >
@@ -168,18 +196,65 @@ const HomePage = () => {
           </div>
         </div>
 
-        {showLoadingBar && <span className="_it4vx _72fik"></span>}
+        {/* {showLoadingBar && <span className="_it4vx _72fik"></span>} */}
 
         <div
           dangerouslySetInnerHTML={{ __html: content }}
           className="text-white"
         />
-        <DynamicMap
-          countries={countryLocations}
-          cities={cities}
-          details={details}
-        />
+
+        <div
+          className="mapWithImageContainer"
+          style={{ position: "relative", width: "100%", height: "500px" }}
+        >
+          {" "}
+          {/* Adjust height as needed */}
+          <DynamicMap
+            countries={countryLocations}
+            cities={cities}
+            details={details}
+          />
+          <div
+            className="imageContainer"
+            style={{
+              position: "absolute",
+              top: "0%", // Adjust based on where you want the image
+              right: "0px", // Adjust based on where you want the image
+
+              zIndex: 1000, // Significantly increase to ensure it's above the map
+            }}
+          >
+            <div className="flex justify-center items-center">
+              <div className="flex item-center yearImageContainer hover09">
+                <figure>
+                  <img
+                    src={yearImage}
+                    alt={`Image for the year ${showYear}`}
+                    style={{ width: "400px", height: "500px" }} // Adjust as needed
+                    className="wikiimg"
+                  />
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      {/* {yearImage && (
+        <div className="flex flex-col items-center">
+          <div className="flex justify-center items-center">
+            <div className="flex m-2 item-center yearImageContainer hover09">
+              <figure>
+                <img
+                  src={yearImage}
+                  alt={`Image for the year ${showYear}`}
+                  style={{ width: "400px", height: "200px" }} // Adjust as needed
+                />
+              </figure>
+            </div>
+          </div>{" "}
+        </div>
+      )} */}
+
       <Footer />
     </div>
   );

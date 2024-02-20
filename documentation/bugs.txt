@@ -14,3 +14,5 @@ formatting:
     –April 6" gets a br but becuase of 1 digit
 
     span should not start with "- "
+
+	year 1899 U.S.

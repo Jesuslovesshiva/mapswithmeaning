@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-custom-bg text-white ">
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
-        <h3 className="text-3xl font-medium">
+        <h3 className="text-3xl font-medium ">
           Teocalli - A Map for every Year{" "}
         </h3>
         <p className="max-w-4xl mx-auto my-4 text-sm text-gray-400 font-mono">
@@ -15,13 +15,12 @@ const Footer = () => {
           interactive maps. Dive into the past, uncover hidden stories, and see
           the world from a new perspective — all at your fingertips.
         </p>
-        <ul className="socials flex items-center justify-center">
+        <ul className="socials flex items-center justify-center ">
           {/* Update href with actual links */}
-          <li className="mx-2">
+          <li className="mx-2 rounded-full ">
             <a
               href="https://www.instagram.com/kunstmacht/"
-              className=" p-3 rounded-full hover:text-cyan-500
-              "
+              className=" hover:text-custom-teal p-3"
             >
               <FontAwesomeIcon
                 icon={faInstagram}
@@ -33,7 +32,7 @@ const Footer = () => {
           <li className="mx-2">
             <a
               href="https://github.com/Jesuslovesshiva"
-              className=" p-3 rounded-full hover:text-cyan-500"
+              className=" p-3 rounded-full hover:text-custom-teal"
             >
               <FontAwesomeIcon icon={faGithub} className="text-2xl" />
             </a>
@@ -49,10 +48,10 @@ const Footer = () => {
           </li> */}
         </ul>
       </div>
-      <div className="footer-bottom text-center mx-5">
-        <p className="text-gray-400">
+      <div className=" footer-bottom text-center mx-5">
+        <p className="text-gray-400 ">
           copyright &copy;{" "}
-          <a href="#" className="text-grey-400">
+          <a href="#" className="text-grey-400  hover:text-custom-teal">
             Daniel Leitner
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
