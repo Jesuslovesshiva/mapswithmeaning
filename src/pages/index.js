@@ -8,7 +8,9 @@ const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
 });
 
 async function fetchYearImage(year) {
-  const response = await fetch(`http://localhost:5000/yearimage?year=${year}`);
+  const response = await fetch(
+    `https://mapswithmeaning.lm.r.appspot.com/yearimage?year=${year}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
