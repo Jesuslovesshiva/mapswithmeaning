@@ -5,11 +5,16 @@ Frontend with Next.js, Backend is written with Flask
 https://teocalli.netlify.app/
 
 1.25
-    - Frontend update
+ - Frontend update
+    
         - some style/hover changes
-        - more responsive on mobil     
+        
+        - more responsive on mobil
+        
     - added wiki img fetch
+    
     - fixed alot of formatting bugs
+    
 
 NEW
 ![grafik](https://github.com/Jesuslovesshiva/mapswithmeaning/assets/111922763/5a953137-aff8-4627-b2db-991f56dbd038)
