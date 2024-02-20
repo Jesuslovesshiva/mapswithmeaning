@@ -1,4 +1,4 @@
-![grafik](https://github.com/Jesuslovesshiva/mapswithmeaning/assets/111922763/6bb22f07-2ee6-4437-8d08-66463946a9d0)Maps with Meaning - Teocalli - under 🏗️
+Maps with Meaning - Teocalli - under 🏗️
 
 Frontend with Next.js, Backend is written with Flask
 
