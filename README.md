@@ -11,9 +11,9 @@ https://teocalli.netlify.app/
         
         - more responsive on mobil
         
-    - added wiki img fetch
+        - added wiki img fetch
     
-    - fixed alot of formatting bugs
+        - fixed alot of formatting bugs
     
 
 NEW
