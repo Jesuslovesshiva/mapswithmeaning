@@ -64,13 +64,21 @@ const HomePage = () => {
   };
 
   // Function to handle dice click
-  const handleDiceClick = () => {
+  const handleDiceClick = async () => {
+    // Make this function async
     setFormInitiallySubmitted(true); // Set the opacity controlling state to true
 
     const randomYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1; // Generate a random year between 1 and 2024
-    fetchAndSetLocations(randomYear.toString()); // Fetch and set locations for the random year
-    setSimulateHoverEffect(true); // Trigger the simulated hover effect
+    await fetchAndSetLocations(randomYear.toString()); // Fetch and set locations for the random year
+    const imageData = await fetchYearImage(randomYear.toString()); // Fetch the image data for the random year
+    if (imageData && imageData.image_url !== "No image available") {
+      setYearImage(imageData.image_url); // Update the state with the new image URL
+    } else {
+      setYearImage(""); // Reset the image URL if none is available
+    }
+    setShowYear(randomYear.toString()); // Update the displayed year
 
+    setSimulateHoverEffect(true); // Trigger the simulated hover effect
     setTimeout(() => {
       setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
     }, 1000); // Adjust the duration according to your needs
