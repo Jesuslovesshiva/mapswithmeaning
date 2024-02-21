@@ -160,6 +160,24 @@ const DynamicMap = ({ countries, cities, details }) => {
   const [showLoadingBar, setShowLoadingBar] = useState(false);
 
   useEffect(() => {
+    // This function will be called when the component mounts
+    const handleLoad = () => {
+      const zoomControlDiv = document.querySelector(
+        ".leaflet-control-zoom.leaflet-bar.leaflet-control"
+      );
+      if (zoomControlDiv) {
+        zoomControlDiv.style.display = "none";
+      }
+    };
+
+    // Add event listener when component mounts
+    window.addEventListener("load", handleLoad);
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("load", handleLoad);
+  }, []); // Empty dependency array ensures this effect runs once, equivalent to componentDidMount
+
+  useEffect(() => {
     const fetchCoordinates = async () => {
       setLoading(true); // Start the loading process
       const places = [...countries, ...cities];
@@ -223,15 +241,6 @@ const DynamicMap = ({ countries, cities, details }) => {
       [idx]: false,
     });
   };
-
-  window.addEventListener("load", () => {
-    const zoomControlDiv = document.querySelector(
-      ".leaflet-control-zoom.leaflet-bar.leaflet-control"
-    );
-    if (zoomControlDiv) {
-      zoomControlDiv.style.display = "none";
-    }
-  });
 
   return (
     <div>

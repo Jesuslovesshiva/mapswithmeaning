@@ -477,6 +477,9 @@ body {
 }
 
 @media (max-width: 550px) {
+  html {
+    overflow: hidden;
+  }
   input[type="number"] {
     caret-color: transparent;
   }
