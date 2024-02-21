@@ -17,22 +17,19 @@ const Footer = () => {
         </p>
         <ul className="socials flex items-center justify-center ">
           {/* Update href with actual links */}
-          <li className="mx-2 rounded-full ">
-            <a
-              href="https://www.instagram.com/kunstmacht/"
-              className=" hover:text-custom-teal p-3"
-            >
+          <li className="mx-2 rounded-full fafooters ">
+            <a href="https://www.instagram.com/kunstmacht/" className="  p-3">
               <FontAwesomeIcon
                 icon={faInstagram}
-                className="text-6xl"
+                className="text-6xl fafooters"
                 size="3x"
               />
             </a>
           </li>
-          <li className="mx-2">
+          <li className="mx-2 fafooters">
             <a
               href="https://github.com/Jesuslovesshiva"
-              className=" p-3 rounded-full hover:text-custom-teal"
+              className=" p-3 rounded-full fafooters hover:scale-100"
             >
               <FontAwesomeIcon icon={faGithub} className="text-2xl" />
             </a>
@@ -49,14 +46,14 @@ const Footer = () => {
         </ul>
       </div>
       <div className=" footer-bottom text-center mx-5">
-        <p className="text-gray-400 ">
+        <p className="text-gray-400">
           copyright &copy;{" "}
           <a href="#" className="text-grey-400  hover:text-custom-teal">
             Daniel Leitner
           </a>
           <span className="text-gray-500 text-sm ml-2 mt-2">
-            Google Maps Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information | v1.25
+            • Google Geocoding API for geocoding locations, Wikipedia API for
+            retrieving historical information & Images | v1.26
           </span>
         </p>
         {/* <div className="footer-menu">

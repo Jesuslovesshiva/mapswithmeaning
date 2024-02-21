@@ -20,11 +20,11 @@ input[type="number"] {
   width: 250px;
 }
 
-/* .inputClass:active,
-.inputClass:focus {
-  box-shadow: 0 0 5px 0 #fff inset, 0 0 20px 1px #fff;
-  border: 0px solid #fff;
-} */
+.button-3:active,
+.button-3:focus {
+  border-color: var(--custom-teal);
+  color: var(--custom-peach);
+}
 
 :root {
   --custom-orange: theme("colors.custom-orange");
@@ -92,43 +92,30 @@ body {
   text-decoration-thickness: 2px; /* Adjust thickness as needed */
 }
 
-@media (max-width: 550px) {
-  .imageContainer {
-    display: none;
-  }
-  .row3 {
-    padding: 10 px 10px;
-  }
-  input[type="number"] {
-    width: 150px;
-  }
-
-  input::placeholder {
-    opacity: 0;
-  }
-
-  .mainlogo {
-    margin: 1em 0.5em 1em 0.5em;
-    min-width: 150px; /* Adjust this value as needed */
-  }
-  .hide-on-small-screen {
-    display: none;
-  }
-  .on-small-screen {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  .SMN_effect-64 {
-    font-size: 0.85em;
-  }
-  .SMN_effect-64 a:before,
-  .SMN_effect-64 a:after {
-    opacity: 0;
-  }
-  .forfooter {
-    margin-bottom: 0.7em;
-  }
+.leaflet-control-zoom.leaflet-bar.leaflet-control {
+  display: none !important;
 }
+.mapWithImageContainer {
+  z-index: 3;
+}
+
+.iiimageContainer {
+  position: absolute;
+  top: 0%;
+  right: 0px;
+  width: 400px;
+  height: 0%;
+  z-index: 1000;
+}
+
+/* Ensure the parent container does not force a larger width */
+.wikiimg {
+  position: relative; /* or other positioning if needed */
+  width: auto; /* adjust width as necessary */
+  display: inline-block; /* or 'block' depending on your layout */
+}
+
+/*  */
 
 .SMN_effect-32 a {
   padding: 0;
@@ -316,8 +303,8 @@ body {
 
 /* Sepia */
 .hover09 figure img {
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
+  -webkit-filter: sepia(100%);
+  filter: sepia(100%);
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
   z-index: 99;
@@ -385,4 +372,159 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Adjust as needed to fit your design */
+}
+
+.fiimageContainer {
+  display: none;
+  position: absolute;
+  bottom: 200;
+  right: 0px;
+  width: 100%;
+  z-index: 3;
+}
+
+.fwikiimg {
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+
+.fafooter {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+  transform: scale(1); /* Initial scale is 100% */
+}
+.fafooters:hover {
+  transform: scale(0.92); /* Scale down to 80% */
+  color: var(--custom-teal);
+}
+
+.tiimageContainer {
+  opacity: 0.4;
+  display: none;
+  position: absolute;
+  top: ;
+  right: 0px;
+  width: 100%;
+  z-index: 3;
+}
+
+.twikiimg {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+}
+
+@media (max-width: 1250px) {
+  .iiimageContainer {
+    width: 300px;
+  }
+  .figureYear {
+    width: 100%;
+  }
+
+  .hover09 {
+    dispaly: flex;
+    justify-content: end;
+  }
+}
+
+@media (max-width: 850px) {
+  .iiimageContainer {
+    width: 200px;
+  }
+  .figureYear {
+    width: 100%;
+  }
+
+  .hover09 {
+    dispaly: flex;
+    justify-content: end;
+  }
+}
+
+@media (max-width: 700px) {
+  .iiimageContainer {
+    width: 150px;
+  }
+
+  .hover09 {
+    dispaly: flex;
+    justify-content: end;
+  }
+}
+
+@media (max-width: 550px) {
+  input[type="number"] {
+    caret-color: transparent;
+  }
+  .tiimageContainer {
+    display: inline;
+  }
+  .fiimageContainer {
+    display: inline;
+  }
+  .iiimageContainer {
+    display: none;
+  }
+
+  .hover09 {
+    dispaly: flex;
+    justify-content: end;
+  }
+
+  .row3 {
+    padding: 10px 6px;
+  }
+  input[type="number"] {
+    width: 150px;
+  }
+
+  input::placeholder {
+    opacity: 0;
+  }
+
+  .mainlogo {
+    margin: 1em 0.5em 1em 0.5em;
+    min-width: 150px; /* Adjust this value as needed */
+  }
+  .hide-on-small-screen {
+    display: none;
+  }
+  .on-small-screen {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .SMN_effect-64 {
+    font-size: 0.85em;
+  }
+  .SMN_effect-64 a:before,
+  .SMN_effect-64 a:after {
+    opacity: 0;
+  }
+  .forfooter {
+    margin-bottom: 0.7em;
+  }
 }

@@ -1,3 +1,6 @@
+// `https://mapswithmeaning.lm.r.appspot.com/yearimage?year=${year}`
+// "https://mapswithmeaning.lm.r.appspot.com/",
+
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Footer from "./footer";
@@ -31,14 +34,15 @@ const HomePage = () => {
   const [isFilled, setIsFilled] = useState(false);
   const [simulateHoverEffect, setSimulateHoverEffect] = useState(false); // New state for simulating hover effect
   const [formInitiallySubmitted, setFormInitiallySubmitted] = useState(false);
-  const [yearImage, setYearImage] = useState("");
+  const [yearImage, setYearImage] = useState("/defimg.jpg");
 
   const fetchAndSetLocations = async (chosenYear) => {
     // setLoading(true);
     // setShowLoadingBar(true);
     try {
       const response = await fetch(
-        "https://mapswithmeaning.lm.r.appspot.com/",
+        "https://mapswithmeaning.lm.r.appspot.com",
+
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -74,7 +78,7 @@ const HomePage = () => {
     if (imageData && imageData.image_url !== "No image available") {
       setYearImage(imageData.image_url); // Update the state with the new image URL
     } else {
-      setYearImage(""); // Reset the image URL if none is available
+      setYearImage("/defimg.jpg"); // Reset the image URL if none is available
     }
     setShowYear(randomYear.toString()); // Update the displayed year
 
@@ -101,7 +105,7 @@ const HomePage = () => {
       if (imageData && imageData.image_url !== "No image available") {
         setYearImage(imageData.image_url); // Update the state with the new image URL
       } else {
-        setYearImage(""); // Reset the image URL if none is available
+        setYearImage("/defimg.jpg"); // Reset the image URL if none is available
       }
       setShowYear(year); // Update the displayed year
       setYear(""); // Clear the input field after submission
@@ -122,6 +126,20 @@ const HomePage = () => {
       <div className="forfooter flex flex-col mb-8 bg-custom-bg">
         <div className="flex flex-col items-center">
           <div className="flex justify-center items-center">
+            <div className="tiimageContainer">
+              <div className="flex justify-center items-center ">
+                <div className="flex item-center yearImageContainer hover09 ">
+                  <figure className="figureYear">
+                    <img
+                      src={yearImage}
+                      alt={`Image for the year ${showYear}`}
+                      style={{ width: "500px", height: "120px" }} // Adjust as needed
+                      className="twikiimg"
+                    />
+                  </figure>
+                </div>
+              </div>
+            </div>
             <div className="flex justify-center items-center mainlogo mx-20 my-10 min-w-[400px] max-w-[600px]">
               <Image
                 src="/png/logo-no-background.png"
@@ -224,19 +242,10 @@ const HomePage = () => {
             cities={cities}
             details={details}
           />
-          <div
-            className="imageContainer"
-            style={{
-              position: "absolute",
-              top: "0%", // Adjust based on where you want the image
-              right: "0px", // Adjust based on where you want the image
-
-              zIndex: 1000, // Significantly increase to ensure it's above the map
-            }}
-          >
-            <div className="flex justify-center items-center">
-              <div className="flex item-center yearImageContainer hover09">
-                <figure>
+          <div className="iiimageContainer">
+            <div className="flex justify-center items-center ">
+              <div className="flex item-center yearImageContainer hover09 ">
+                <figure className="figureYear">
                   <img
                     src={yearImage}
                     alt={`Image for the year ${showYear}`}
@@ -264,7 +273,20 @@ const HomePage = () => {
           </div>{" "}
         </div>
       )} */}
-
+      <div className="fiimageContainer">
+        <div className="flex justify-center items-center ">
+          <div className="flex item-center yearImageContainer hover09 ">
+            <figure className="figureYear">
+              <img
+                src={yearImage}
+                alt={`Image for the year ${showYear}`}
+                style={{ width: "500px", height: "400px" }} // Adjust as needed
+                className="fwikiimg"
+              />
+            </figure>
+          </div>
+        </div>
+      </div>
       <Footer />
     </div>
   );

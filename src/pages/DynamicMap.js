@@ -1,3 +1,5 @@
+// `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
+
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
@@ -49,11 +51,19 @@ const patternsToExclude = [
   /\nReligion/g,
 ];
 
+const formatTextBeforeExtend = (text) => {
+  return text.replace(/U\.S\./g, "USA");
+};
+
 const formatText = (text) => {
   // Pattern Exclusion
   patternsToExclude.forEach((pattern) => {
     text = text.replace(pattern, "");
   });
+  text = text.replace(
+    /(\bJanuary|\bFebruary|\bMarch|\bApril|\bMay|\bJune|\bJuly|\bAugust|\bSeptember|\bOctober|\bNovember|\bDecember)\s+(\d{1,2})\s+–\s+(\bJanuary|\bFebruary|\bMarch|\bApril|\bMay|\bJune|\bJuly|\bAugust|\bSeptember|\bOctober|\bNovember|\bDecember)\s+(\d{1,2})/g,
+    "$1 $2–$3 $4"
+  );
 
   text = text.replace(/.:\u200a([^' ']+)/g, ". ");
 
@@ -61,8 +71,15 @@ const formatText = (text) => {
   text = text.replace(/:\u200a([^' ']+)/g, ".");
 
   text = text.replace(/(\.\s)/g, ". ");
-  text = text.replace(/(\.\s)/g, "");
+  // text = text.replace(/(\.\s)/g, "");
+
   text = text.replace(/ – /g, " ");
+
+  // Using regular expression to match date formats like "April/May" and format them as <strong> and <br> elements
+  text = text.replace(
+    /(^|\.\s+)((January|February|March|April|May|June|July|August|September|October|November|December)(\/[a-zA-Z]+)?(?!\s+\d{1,2}(–\d{1,2})?))/g,
+    "$1<br /><strong>$2</strong><br />"
+  );
 
   // Formatting for month-to-month ranges without specific days
   text = text.replace(
@@ -99,27 +116,41 @@ const formatText = (text) => {
   return text;
 };
 
-const splitTextAtSentenceBoundary = (text, maxWords) => {
-  const sentences = text.match(/[^\.!\?]+[\.!\?]+/g) || []; // Split text into sentences
+function splitTextAtSentenceBoundary(text, maxWords) {
+  // Split text into potential sentences.
+  const potentialSentences = text.split(/([.!?]+)\s/).filter(Boolean); // Include punctuation in split results
   let wordCount = 0;
-  let lastIndex = 0;
-  for (let i = 0; i < sentences.length; i++) {
-    const sentenceWordCount = sentences[i].split(" ").length;
-    if (wordCount + sentenceWordCount > maxWords) break; // Stop if adding another sentence exceeds limit
-    wordCount += sentenceWordCount;
-    lastIndex = i;
+  let initialTextParts = [];
+  let remainingTextParts = [];
+  let isAccumulating = true;
+
+  // Reconstruct sentences and determine split based on word count.
+  for (let i = 0; i < potentialSentences.length; i += 2) {
+    const sentence = potentialSentences[i] + (potentialSentences[i + 1] || ""); // Re-add punctuation.
+    const sentenceWordCount = sentence.split(/\s+/).length;
+
+    if (isAccumulating && wordCount + sentenceWordCount <= maxWords) {
+      // Accumulate into initial text until maxWords is reached.
+      initialTextParts.push(sentence);
+      wordCount += sentenceWordCount;
+    } else {
+      // Once maxWords is exceeded, accumulate into remaining text.
+      isAccumulating = false; // Ensure we only switch once.
+      remainingTextParts.push(sentence);
+    }
   }
 
-  const initialText = sentences
-    .slice(0, lastIndex + 1)
-    .join(" ")
-    .trim();
-  const remainingText = sentences
-    .slice(lastIndex + 1)
-    .join(" ")
-    .trim();
+  // Join the parts back into text.
+  const initialText = initialTextParts.join(" ").trim();
+  const remainingText = remainingTextParts.join(" ").trim();
+
+  // Log for debugging.
+  console.log(`Splitting text for detail: ${text}`);
+  console.log(`Initial text: ${initialText}`);
+  console.log(`Remaining text: ${remainingText}`);
+
   return { initialText, remainingText };
-};
+}
 
 const DynamicMap = ({ countries, cities, details }) => {
   const [markers, setMarkers] = useState([]);
@@ -156,6 +187,7 @@ const DynamicMap = ({ countries, cities, details }) => {
                 detail: details[place],
               };
               localCache[place] = location;
+
               return location;
             } else {
               console.error(`No geocode result for ${place}`);
@@ -166,7 +198,6 @@ const DynamicMap = ({ countries, cities, details }) => {
           return null;
         })
       );
-
       setMarkers(coords.filter(Boolean));
       setLoading(false); // End the loading process once all markers are set
     };
@@ -192,6 +223,16 @@ const DynamicMap = ({ countries, cities, details }) => {
       [idx]: false,
     });
   };
+
+  window.addEventListener("load", () => {
+    const zoomControlDiv = document.querySelector(
+      ".leaflet-control-zoom.leaflet-bar.leaflet-control"
+    );
+    if (zoomControlDiv) {
+      zoomControlDiv.style.display = "none";
+    }
+  });
+
   return (
     <div>
       {loading && <span className="_it4vx _72fik"></span>}
@@ -206,9 +247,15 @@ const DynamicMap = ({ countries, cities, details }) => {
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {markers.map(({ lat, lon, place, detail }, idx) => {
+              // Pre-process the detail text before splitting and formatting
+              const preProcessedDetail = formatTextBeforeExtend(
+                Array.isArray(detail) ? detail.join(" ") : detail
+              );
+
+              // Now split the pre-processed detail text
               const { initialText, remainingText } =
                 splitTextAtSentenceBoundary(
-                  Array.isArray(detail) ? detail.join(" ") : detail, // Modify this based on the structure of your detail data
+                  preProcessedDetail, // Use the pre-processed text here
                   60 // Max words before 'View More'
                 );
               // Apply formatText separately if needed or check the formatting
