@@ -60,6 +60,24 @@ const formatText = (text) => {
   patternsToExclude.forEach((pattern) => {
     text = text.replace(pattern, "");
   });
+  // Formatting for month-to-month ranges without specific days
+  text = text.replace(
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)–(January|February|March|April|May|June|July|August|September|October|November|December)\b)/g,
+    "<br /><strong>$1</strong><br />"
+  );
+
+  // Date Range Formatting for different month ranges with specific days and "&"
+  text = text.replace(
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d+(\d*)\s*(?:&)\s*\d+(\d*)\b)/g,
+    "<br /><strong>$1</strong><br />"
+  );
+
+  // Date Range Formatting for different month ranges with specific days and "&"
+  text = text.replace(
+    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d+(\d*)\s*&\s*(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d+(\d*)\b)/g,
+    "<br /><strong>$1</strong><br />"
+  );
+
   text = text.replace(
     /(\bJanuary|\bFebruary|\bMarch|\bApril|\bMay|\bJune|\bJuly|\bAugust|\bSeptember|\bOctober|\bNovember|\bDecember)\s+(\d{1,2})\s+–\s+(\bJanuary|\bFebruary|\bMarch|\bApril|\bMay|\bJune|\bJuly|\bAugust|\bSeptember|\bOctober|\bNovember|\bDecember)\s+(\d{1,2})/g,
     "$1 $2–$3 $4"
@@ -79,12 +97,6 @@ const formatText = (text) => {
   text = text.replace(
     /(^|\.\s+)((January|February|March|April|May|June|July|August|September|October|November|December)(\/[a-zA-Z]+)?(?!\s+\d{1,2}(–\d{1,2})?))/g,
     "$1<br /><strong>$2</strong><br />"
-  );
-
-  // Formatting for month-to-month ranges without specific days
-  text = text.replace(
-    /(\b(January|February|March|April|May|June|July|August|September|October|November|December)–(January|February|March|April|May|June|July|August|September|October|November|December)\b)/g,
-    "<br /><strong>$1</strong><br />"
   );
 
   // Date Range Formatting for same month ranges (keeping only months here)
@@ -158,6 +170,21 @@ const DynamicMap = ({ countries, cities, details }) => {
   const detailRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [showLoadingBar, setShowLoadingBar] = useState(false);
+
+  const empireToCity = {};
+  Object.entries(cityToEmpire).forEach(([city, empire]) => {
+    empireToCity[empire] = city;
+  });
+
+  // Translate the city names back in the detail text
+  const translateCityNamesBack = (detail) => {
+    Object.keys(empireToCity).forEach((empire) => {
+      const city = empireToCity[empire];
+      const regex = new RegExp(city, "gi");
+      detail = detail.replace(regex, empire);
+    });
+    return detail;
+  };
 
   useEffect(() => {
     // This function will be called when the component mounts
@@ -257,6 +284,10 @@ const DynamicMap = ({ countries, cities, details }) => {
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {markers.map(({ lat, lon, place, detail }, idx) => {
               // Pre-process the detail text before splitting and formatting
+              detail = translateCityNamesBack(detail);
+
+              // Pre-process and split the detail text...
+              // Apply for
               const preProcessedDetail = formatTextBeforeExtend(
                 Array.isArray(detail) ? detail.join(" ") : detail
               );
