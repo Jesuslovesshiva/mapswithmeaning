@@ -1,0 +1,139 @@
+.the-slider-container {
+  display: flex;
+  z-index: 5;
+}
+
+.slider {
+  position: relative;
+  width: 300px;
+}
+
+.slider__track,
+.slider__range,
+.slider__left-value,
+.slider__right-value {
+  position: absolute;
+}
+
+.slider__track,
+.slider__range {
+  border-radius: 3px;
+  height: 5px;
+}
+
+.slider__track {
+  background-color: var(--custom-teal);
+  width: 100%;
+  z-index: 1;
+}
+
+.slider__range {
+  background-color: var(--custom-teal);
+
+  z-index: 2;
+}
+
+.slider__left-value,
+.slider__right-value {
+  color: rgb(107 114 128);
+  font-size: 0.9em;
+  margin-top: 3px; /* Adjust based on your slider's design */
+  position: absolute;
+  transform: translateX(-50%); /* Center the label under the thumb */
+}
+
+/* Adjust other styles as needed */
+
+.slider__left-value {
+  left: 6px;
+}
+
+.slider__right-value {
+  right: -20px;
+}
+
+/* Removing the default appearance */
+.thumb,
+.thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.thumb {
+  pointer-events: none;
+  position: absolute;
+  height: 0;
+  width: 300px;
+  outline: none;
+}
+
+.thumb--zindex-3 {
+  z-index: 3;
+}
+
+.thumb--zindex-4 {
+  z-index: 4;
+}
+
+.thumb--zindex-5 {
+  z-index: 5;
+}
+
+/* For Chrome browsers */
+.thumb::-webkit-slider-thumb {
+  background-color: var(--custom-peach);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 1px 1px #ced4da;
+  cursor: default;
+  height: 18px;
+  width: 18px;
+  pointer-events: all;
+  position: relative;
+}
+
+/* For Firefox browsers */
+.thumb::-moz-range-thumb {
+  background-color: var(--custom-peach);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 0px 0px var(--custom-peach);
+  cursor: default;
+  height: 18px;
+  width: 18px;
+  margin-top: 4px;
+  pointer-events: all;
+  position: relative;
+}
+
+input {
+  font-size: 2em;
+}
+
+/* For Chrome, Safari, and other WebKit browsers */
+.thumb--zindex-4::-webkit-slider-thumb {
+  background-image: url("/flag1.png"); /* Adjust the path to your image */
+  background-color: transparent; /* Hide the original background color */
+  background-repeat: no-repeat;
+  background-size: contain; /* Resize the image to fit inside the thumb */
+  border: none; /* Remove any border */
+  width: 40px; /* Increase the width */
+  height: 40px; /* Increase the height */
+}
+
+/* For Firefox and other Gecko browsers */
+.thumb--zindex-4::-moz-range-thumb {
+  background-image: url("/flag1.png"); /* Adjust the path to your image */
+  background-color: transparent; /* Hide the original background color */
+  background-repeat: no-repeat;
+  background-size: contain; /* Resize the image to fit inside the thumb */
+  border: none; /* Remove any border */
+  width: 40px; /* Increase the width */
+  height: 40px; /* Increase the height */
+}
+
+#flagbaby {
+  margin-bottom: 9px;
+  bottom: 1px;
+  z-index: -1;
+}

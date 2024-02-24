@@ -3,6 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
+import { useMap } from "react-leaflet";
+import L from "leaflet";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -157,14 +159,41 @@ function splitTextAtSentenceBoundary(text, maxWords) {
   const remainingText = remainingTextParts.join(" ").trim();
 
   // Log for debugging.
-  console.log(`Splitting text for detail: ${text}`);
-  console.log(`Initial text: ${initialText}`);
-  console.log(`Remaining text: ${remainingText}`);
+  // console.log(`Splitting text for detail: ${text}`);
+  // console.log(`Initial text: ${initialText}`);
+  // console.log(`Remaining text: ${remainingText}`);
 
   return { initialText, remainingText };
 }
 
-const DynamicMap = ({ countries, cities, details }) => {
+function MapEffect({ closePopupsTrigger }) {
+  const map = useMap();
+
+  useEffect(() => {
+    const closePopups = () => {
+      map.closePopup();
+    };
+
+    // Add event listener for 'dragstart' to close popups
+    map.on("dragstart", closePopups);
+
+    // This part remains unchanged, it closes popups based on your existing closePopupsTrigger
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Popup) {
+        map.closePopup(layer);
+      }
+    });
+
+    // Cleanup function to remove the event listener when the component is unmounted or dependencies change
+    return () => {
+      map.off("dragstart", closePopups);
+    };
+  }, [closePopupsTrigger, map]); // Add map to the dependency array if it's not already there
+
+  return null; // no rendering, just for closing popups
+}
+
+const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
   const [markers, setMarkers] = useState([]);
   const [expandedDetails, setExpandedDetails] = useState({}); // State to track which details are expanded
   const detailRef = useRef(null);
@@ -186,23 +215,14 @@ const DynamicMap = ({ countries, cities, details }) => {
     return detail;
   };
 
-  useEffect(() => {
-    // This function will be called when the component mounts
-    const handleLoad = () => {
-      const zoomControlDiv = document.querySelector(
-        ".leaflet-control-zoom.leaflet-bar.leaflet-control"
-      );
-      if (zoomControlDiv) {
-        zoomControlDiv.style.display = "none";
-      }
-    };
-
-    // Add event listener when component mounts
-    window.addEventListener("load", handleLoad);
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("load", handleLoad);
-  }, []); // Empty dependency array ensures this effect runs once, equivalent to componentDidMount
+  // useEffect(() => {
+  //   const zoomControlDiv = document.querySelector(
+  //     ".leaflet-control-zoom.leaflet-bar.leaflet-control"
+  //   );
+  //   if (zoomControlDiv) {
+  //     zoomControlDiv.style.display = "none";
+  //   }
+  // }, []); // This will run once when the component mounts
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -218,7 +238,7 @@ const DynamicMap = ({ countries, cities, details }) => {
 
           try {
             const response = await fetch(
-              `https://mapswithmeaning.lm.r.appspot.com//geocode?address=${encodeURIComponent(
+              `https://mapswithmeaning.lm.r.appspot.com/geocode?address=${encodeURIComponent(
                 place
               )}`
             );
@@ -277,7 +297,13 @@ const DynamicMap = ({ countries, cities, details }) => {
           <MapContainer
             center={[20, 0]}
             zoom={3}
+            minZoom={1} // Set the minimum zoom level as needed
             scrollWheelZoom={true}
+            maxBounds={[
+              [-100, -250], // Southwest coordinates
+              [100, 250], // Northeast coordinates
+            ]}
+            maxBoundsViscosity={1.0}
             style={{ height: "500px", width: "100%" }}
             className="Map"
           >
@@ -387,6 +413,7 @@ const DynamicMap = ({ countries, cities, details }) => {
                 </Marker>
               );
             })}
+            <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "}
           </MapContainer>
         )}
       </div>

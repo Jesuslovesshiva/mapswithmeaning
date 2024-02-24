@@ -85,11 +85,38 @@ body {
 }
 
 .custom-underline {
+  display: flex;
   text-decoration: underline;
   text-decoration-color: var(
     --custom-teal
   ); /* Replace #yourColor with the actual color code */
   text-decoration-thickness: 2px; /* Adjust thickness as needed */
+}
+
+.hide {
+  display: none;
+}
+
+.menu {
+  margin-left: 0; /* Initial state */
+}
+
+.countdown {
+  display: none; /* Initially hidden */
+  color: white;
+  font-size: 2rem; /* Example size, adjust as needed */
+}
+
+.game-started .custom-underline {
+  display: none;
+}
+
+.game-started .menu {
+  margin-left: auto;
+}
+
+.countdown.show {
+  display: flex; /* Show the countdown when game starts */
 }
 
 .leaflet-control-zoom.leaflet-bar.leaflet-control {
@@ -105,6 +132,17 @@ body {
   right: 0px;
   width: 400px;
   height: 0%;
+  z-index: 1000;
+}
+
+.slider-imageContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: -10%;
+  width: 100px; /* Need a specific value to work */
   z-index: 1000;
 }
 
@@ -171,10 +209,34 @@ body {
     top: -50px;
   }
 }
+.playbuttondiv {
+  margin-left: auto;
+  margin-right: 5px;
+  dispaly: flex;
+}
+.play-button figure:hover {
+  color: var(--custom-teal);
+  dispaly: flex;
+}
 
 .hover15 figure {
   position: relative;
+  width: 40px; /* Define a fixed width */
+  height: 37px; /* Define a fixed height */
+  line-height: 37px; /* Align text vertically */
+  text-align: center; /* Align text horizontally */
 }
+
+.hover15 figure .play-button {
+  width: 100%;
+  height: 100%;
+  background-color: #000; /* Button background color */
+  color: white; /* Button text color */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
 .hover15 figure::before {
   position: absolute;
   top: 50%;
@@ -250,6 +312,7 @@ body {
 }
 
 .SMN_effect-64 a {
+  margin-right: 1em;
   position: relative;
   z-index: 2;
 }
@@ -307,12 +370,17 @@ body {
   filter: sepia(100%);
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
-  z-index: 99;
 }
 .hover09 figure:hover img {
   -webkit-filter: sepia(0);
   filter: sepia(0);
-  z-index: 99;
+}
+
+.topimg .figureYear img {
+  -webkit-filter: sepia(40%);
+  filter: sepia(40%);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 /* .wikiimgFade {
@@ -436,8 +504,26 @@ body {
   object-fit: cover;
   object-position: 50% 0%;
 }
+/* 
+.slidercontainer {
+  dispaly: flex;
+  height: 10%;
+  width: 100vw;
+  background-color: var(--custom-bg);
+  margin-bottom: 2em;
+} */
 
 @media (max-width: 1250px) {
+  .slider-imageContainer {
+    margin-left: auto;
+    margin-right: auto;
+    top: 90%;
+    right: 60%;
+    z-index: 999;
+  }
+  .slider {
+    color: black;
+  }
   .iiimageContainer {
     width: 300px;
   }
@@ -452,6 +538,13 @@ body {
 }
 
 @media (max-width: 850px) {
+  .slider-imageContainer {
+    margin-left: auto;
+    margin-right: auto;
+    top: 90%;
+    right: 40%;
+    z-index: 999;
+  }
   .iiimageContainer {
     width: 200px;
   }
@@ -466,6 +559,9 @@ body {
 }
 
 @media (max-width: 700px) {
+  input[type="number"] {
+    width: 170px;
+  }
   .iiimageContainer {
     width: 150px;
   }
@@ -477,6 +573,20 @@ body {
 }
 
 @media (max-width: 550px) {
+  .Map {
+    height: 420px !important;
+  }
+  .slider-imageContainer {
+    right: 0%;
+
+    margin-left: auto;
+    margin-right: auto;
+    top: 92%;
+  }
+  /* .slider__left-value,
+  .slider__right-value {
+  } */
+
   input[type="number"] {
     caret-color: transparent;
   }
@@ -514,8 +624,8 @@ body {
     display: none;
   }
   .on-small-screen {
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
   .SMN_effect-64 {
     font-size: 0.85em;
