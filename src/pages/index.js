@@ -1,7 +1,7 @@
 // `https://mapswithmeaning.lm.r.appspot.com/yearimage?year=${year}`
 // "https://mapswithmeaning.lm.r.appspot.com/",
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
@@ -42,6 +42,7 @@ const HomePage = () => {
   const [difference, setDifference] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
   const [closePopupsTrigger, setClosePopupsTrigger] = useState(0);
+  const yearInputRef = useRef(null);
 
   const validUserYear = parseInt(userYear) || 0; // Defaults to 0 if NaN
   const validShowYear = parseInt(showYear) || 0; // Defaults to 0 if NaN
@@ -187,6 +188,8 @@ const HomePage = () => {
     const inputYear = parseInt(year);
     const gameYear = parseInt(showYear); // Ensure this is also a valid number
 
+    if (yearInputRef.current) yearInputRef.current.blur();
+
     if (gameStarted) {
       if (inputYear === gameYear) {
         // Check the guess
@@ -309,6 +312,7 @@ const HomePage = () => {
             >
               <div className="input relative text-gray-600 menu align-center">
                 <input
+                  ref={yearInputRef}
                   type="number"
                   value={year}
                   onChange={handleChange}
@@ -424,31 +428,30 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="divider text-color-bg">
-          <p className="text-gray-300">go to a random Year</p>
-        </div>
-        <div className="footer-content flex flex-col items-center justify-center text-center mx-4">
-          <div className="dice2">
-            <button
-              onSubmit={handleSubmit}
-              onClick={handleDiceClick}
-              className=" on-small-screen hover15"
-            >
-              {" "}
-              <figure>
-                <Image
-                  src="/dice.png"
-                  alt="Roll Dice"
-                  width={40}
-                  height={40}
-                  style={{ objectFit: "contain" }}
-                />
-              </figure>
-            </button>
+      </div>
+      <div className="footer-content flex flex-col items-center justify-center text-center mx-4">
+        <div className="dice2">
+          <button
+            onSubmit={handleSubmit}
+            onClick={handleDiceClick}
+            className=" on-small-screen hover15"
+          >
+            {" "}
+            <figure>
+              <Image
+                src="/dice.png"
+                alt="Roll Dice"
+                width={40}
+                height={40}
+                style={{ objectFit: "contain" }}
+              />
+            </figure>
+          </button>
+          <div className="divider text-color-bg">
+            <p className="text-gray-300">go to a random Year</p>
           </div>
         </div>
       </div>
-
       <div className="fiimageContainer">
         <div className="flex justify-center items-center ">
           <div className="flex item-center yearImageContainer hover09 ">

@@ -48,7 +48,7 @@ const Footer = () => {
           </li> */}
         </ul>
       </div>
-      <div className=" footer-bottom text-center mx-5">
+      <div className=" footer-bottom text-center mx-5 m-10">
         <p className="text-gray-400">
           copyright &copy;{" "}
           <a href="#" className="text-grey-400  hover:text-custom-teal">

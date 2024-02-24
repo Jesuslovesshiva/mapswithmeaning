@@ -137,6 +137,7 @@ body {
 
 .slider-imageContainer {
   position: absolute;
+
   left: 0;
   right: 0;
   margin-left: auto;
@@ -211,7 +212,6 @@ body {
 }
 .playbuttondiv {
   margin-left: auto;
-  margin-right: 5px;
   dispaly: flex;
 }
 .play-button figure:hover {
@@ -357,11 +357,13 @@ body {
 .opacity-hidden {
   opacity: 0;
   transition: opacity 1s ease; /* Smooth transition to visible */
+  display: none;
 }
 
 .opacity-visible {
   opacity: 1;
   transition: opacity 1s ease; /* Ensure the transition is smooth */
+  display: flex;
 }
 
 /* Sepia */
@@ -573,6 +575,9 @@ body {
 }
 
 @media (max-width: 550px) {
+  .row3 {
+    padding: 12px 10px;
+  }
   .Map {
     height: 420px !important;
   }
@@ -607,11 +612,6 @@ body {
     dispaly: flex;
     justify-content: end;
   }
-
-  .row3 {
-    padding: 10px 6px;
-  }
-
   .mainlogo {
     margin: 1em 0.5em;
     min-width: 130px; /* Adjust this value as needed */
@@ -640,36 +640,18 @@ body {
 
   .slider-imageContainer {
     right: 4px;
-
     top: 88%;
   }
   input[type="number"] {
-    width: 130px;
-  }
-
-  .mainlogo {
-    margin: 0.6em 0.5em;
-    min-width: 130px; /* Adjust this value as needed */
+    width: 120px;
   }
 }
 
 @media (max-width: 370px) {
-  .Map {
-    height: 390px !important;
-  }
   input[type="number"] {
     width: 100vw0px;
   }
-  .slider-imageContainer {
-    right: px;
 
-    top: 85%;
-  }
-
-  .mainlogo {
-    margin: 0.6em 0.5em;
-    min-width: 130px; /* Adjust this value as needed */
-  }
   button[type="submit"] {
     display: none;
   }
@@ -685,10 +667,7 @@ body {
 .divider {
   position: relative;
   text-align: center;
-  margin: 5px 0; /* Adjust spacing around the divider as needed */
-}
-p {
-  margin-top: 30px;
+  margin: 10px; /* Adjust spacing around the divider as needed */
 }
 
 .divider hr.gradient {
