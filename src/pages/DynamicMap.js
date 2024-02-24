@@ -3,8 +3,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
-import { useMap } from "react-leaflet";
-import L from "leaflet";
+
+const useMap = dynamic(
+  () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),
+  {
+    ssr: false,
+  }
+);
+
+const L = dynamic(() => import("leaflet"), {
+  ssr: false,
+});
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
