@@ -247,13 +247,13 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="forfooter flex flex-col mb-8 bg-custom-bg">
-        <div className="flex flex-col items-center">
-          <div className="flex justify-center items-center">
+      <div className="forfooter flex flex-col mb-8 bg-custom-bg ">
+        <div className="flex flex-col items-center ">
+          <div className="flex justify-center items-center ">
             <div className="tiimageContainer">
               <div className="flex justify-center items-center ">
-                <div className="flex item-center yearImageContainer hover09 topimg">
-                  <figure className="figureYear">
+                <div className="flex   item-center yearImageContainer hover09 topimg">
+                  <figure className="figureYear ">
                     <img
                       src={yearImage}
                       alt={`Image for the year ${showYear}`}
@@ -322,7 +322,7 @@ const HomePage = () => {
                   className={`inputClass h-10 pl-5 pr-10 w-full rounded-lg text-sm focus:outline-none border-2px
                 text-center  border-gray-100 bg-grey-300 button-3 ${
                   isFilled ? "button-3" : "button-3"
-                }`} // Apply conditional class for hover effects
+                }`} // Apply conditional class for  effects
                   onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
                 />
                 <button
@@ -341,7 +341,7 @@ const HomePage = () => {
             <div className={`playbuttondiv ${gameStarted ? "hidden" : ""}`}>
               <button
                 onClick={startGame}
-                className="px-4 rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2"
+                className=" rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2"
               >
                 <figure>PLAY</figure>
               </button>
@@ -351,7 +351,7 @@ const HomePage = () => {
             >
               {countdown}
             </div>
-            <div className="">
+            <div className="dice">
               <button
                 onSubmit={handleSubmit}
                 onClick={handleDiceClick}
@@ -424,22 +424,31 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </div>
-      {/* {yearImage && (
-        <div className="flex flex-col items-center">
-          <div className="flex justify-center items-center">
-            <div className="flex m-2 item-center yearImageContainer hover09">
+        <div className="divider text-color-bg">
+          <p className="text-gray-300">go to a random Year</p>
+        </div>
+        <div className="footer-content flex flex-col items-center justify-center text-center mx-4">
+          <div className="dice2">
+            <button
+              onSubmit={handleSubmit}
+              onClick={handleDiceClick}
+              className=" on-small-screen hover15"
+            >
+              {" "}
               <figure>
-                <img
-                  src={yearImage}
-                  alt={`Image for the year ${showYear}`}
-                  style={{ width: "400px", height: "200px" }} // Adjust as needed
+                <Image
+                  src="/dice.png"
+                  alt="Roll Dice"
+                  width={40}
+                  height={40}
+                  style={{ objectFit: "contain" }}
                 />
               </figure>
-            </div>
-          </div>{" "}
+            </button>
+          </div>
         </div>
-      )} */}
+      </div>
+
       <div className="fiimageContainer">
         <div className="flex justify-center items-center ">
           <div className="flex item-center yearImageContainer hover09 ">

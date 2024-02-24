@@ -84,7 +84,7 @@
   background-color: var(--custom-peach);
   border: none;
   border-radius: 50%;
-  box-shadow: 0 0 1px 1px #ced4da;
+
   cursor: default;
   height: 18px;
   width: 18px;
@@ -97,7 +97,6 @@
   background-color: var(--custom-peach);
   border: none;
   border-radius: 50%;
-  box-shadow: 0 0 0px 0px var(--custom-peach);
   cursor: default;
   height: 18px;
   width: 18px;
@@ -134,6 +133,6 @@ input {
 
 #flagbaby {
   margin-bottom: 9px;
-  bottom: 1px;
+  bottom: 2px;
   z-index: -1;
 }

@@ -7,6 +7,9 @@ const Footer = () => {
     <footer className="bg-custom-bg text-white ">
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
         <h3 className="text-3xl font-medium ">
+          <div className="divider text-color-bg">
+            <hr className="gradient" /> <p className="text-gray-300"></p>
+          </div>
           Teocalli - A Map for every Year{" "}
         </h3>
         <p className="max-w-4xl mx-auto my-4 text-sm text-gray-400 font-mono">

@@ -583,13 +583,16 @@ body {
     margin-right: auto;
     top: 92%;
   }
-  /* .slider__left-value,
-  .slider__right-value {
-  } */
 
   input[type="number"] {
+    width: 150px;
     caret-color: transparent;
   }
+
+  input::placeholder {
+    opacity: 0;
+  }
+
   .tiimageContainer {
     display: inline;
   }
@@ -608,28 +611,20 @@ body {
   .row3 {
     padding: 10px 6px;
   }
-  input[type="number"] {
-    width: 150px;
-  }
-
-  input::placeholder {
-    opacity: 0;
-  }
 
   .mainlogo {
-    margin: 1em 0.5em 1em 0.5em;
-    min-width: 150px; /* Adjust this value as needed */
+    margin: 1em 0.5em;
+    min-width: 130px; /* Adjust this value as needed */
   }
   .hide-on-small-screen {
     display: none;
   }
   .on-small-screen {
-    padding-left: 6px;
-    padding-right: 6px;
   }
   .SMN_effect-64 {
     font-size: 0.85em;
   }
+
   .SMN_effect-64 a:before,
   .SMN_effect-64 a:after {
     opacity: 0;
@@ -637,4 +632,88 @@ body {
   .forfooter {
     margin-bottom: 0.7em;
   }
+}
+@media (max-width: 450px) {
+  .Map {
+    height: 405px !important;
+  }
+
+  .slider-imageContainer {
+    right: 4px;
+
+    top: 88%;
+  }
+  input[type="number"] {
+    width: 130px;
+  }
+
+  .mainlogo {
+    margin: 0.6em 0.5em;
+    min-width: 130px; /* Adjust this value as needed */
+  }
+}
+
+@media (max-width: 370px) {
+  .Map {
+    height: 390px !important;
+  }
+  input[type="number"] {
+    width: 100vw0px;
+  }
+  .slider-imageContainer {
+    right: px;
+
+    top: 85%;
+  }
+
+  .mainlogo {
+    margin: 0.6em 0.5em;
+    min-width: 130px; /* Adjust this value as needed */
+  }
+  button[type="submit"] {
+    display: none;
+  }
+}
+
+.dice {
+  display: none;
+}
+.dice2 {
+  display: flex;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 5px 0; /* Adjust spacing around the divider as needed */
+}
+p {
+  margin-top: 30px;
+}
+
+.divider hr.gradient {
+  border: none;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #d2d2d2,
+    transparent
+  ); /* Adjust colors as needed */
+  margin: 0; /* Remove default margin */
+}
+
+/* Assuming this is inside your global CSS or a module.css linked correctly */
+.divider hr.gradient {
+  border: none;
+  height: 2px; /* Ensures the line is thin */
+  width: 50%; /* Adjust width as needed */
+  margin: 0 auto; /* Centers the line */
+  background: linear-gradient(
+    to right,
+    transparent,
+    #d2d2d2,
+    ,
+    transparent
+  ); /* Creates the fade effect */
 }

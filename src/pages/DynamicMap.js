@@ -175,6 +175,7 @@ function splitTextAtSentenceBoundary(text, maxWords) {
   return { initialText, remainingText };
 }
 
+// have to comment out cuz of ssr issues
 // function MapEffect({ closePopupsTrigger }) {
 //   const map = useMap();
 
