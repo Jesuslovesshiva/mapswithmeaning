@@ -4,12 +4,12 @@ import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
 
-const useMap = dynamic(
-  () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),
-  {
-    ssr: false,
-  }
-);
+// const useMap = dynamic(
+//   () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),
+//   {
+//     ssr: false,
+//   }
+// );
 
 const L = dynamic(() => import("leaflet"), {
   ssr: false,
@@ -175,32 +175,32 @@ function splitTextAtSentenceBoundary(text, maxWords) {
   return { initialText, remainingText };
 }
 
-function MapEffect({ closePopupsTrigger }) {
-  const map = useMap();
+// function MapEffect({ closePopupsTrigger }) {
+//   const map = useMap();
 
-  useEffect(() => {
-    const closePopups = () => {
-      map.closePopup();
-    };
+//   useEffect(() => {
+//     const closePopups = () => {
+//       map.closePopup();
+//     };
 
-    // Add event listener for 'dragstart' to close popups
-    map.on("dragstart", closePopups);
+//     // Add event listener for 'dragstart' to close popups
+//     map.on("dragstart", closePopups);
 
-    // This part remains unchanged, it closes popups based on your existing closePopupsTrigger
-    map.eachLayer((layer) => {
-      if (layer instanceof L.Popup) {
-        map.closePopup(layer);
-      }
-    });
+//     // This part remains unchanged, it closes popups based on your existing closePopupsTrigger
+//     map.eachLayer((layer) => {
+//       if (layer instanceof L.Popup) {
+//         map.closePopup(layer);
+//       }
+//     });
 
-    // Cleanup function to remove the event listener when the component is unmounted or dependencies change
-    return () => {
-      map.off("dragstart", closePopups);
-    };
-  }, [closePopupsTrigger, map]); // Add map to the dependency array if it's not already there
+//     // Cleanup function to remove the event listener when the component is unmounted or dependencies change
+//     return () => {
+//       map.off("dragstart", closePopups);
+//     };
+//   }, [closePopupsTrigger, map]); // Add map to the dependency array if it's not already there
 
-  return null; // no rendering, just for closing popups
-}
+//   return null; // no rendering, just for closing popups
+// }
 
 const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
   const [markers, setMarkers] = useState([]);
@@ -422,7 +422,7 @@ const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
                 </Marker>
               );
             })}
-            <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "}
+            {/* <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "} */}
           </MapContainer>
         )}
       </div>
