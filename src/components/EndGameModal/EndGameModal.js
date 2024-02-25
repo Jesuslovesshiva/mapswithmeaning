@@ -65,10 +65,10 @@ const EndGameModal = ({
       <button className="popup-close-button" onClick={handleClose}>
         ×
       </button>
-      <p className="text-gray-200">
-        Your guess was <strong>{difference}</strong> years off!
+      <p className="text-gray-200 text-xl">
+        Your guess was <strong>{difference}</strong> years off
       </p>
-      <p className="text-gray-200">
+      <p className="text-gray-200 text-lg">
         Your points: <strong className="text--custom-teal">{points}</strong>
       </p>
       <button className="nextround" onClick={startNextRound}>

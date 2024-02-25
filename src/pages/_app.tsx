@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import './multiRangeSlider/multiRangeSlider.css';
-import './EndGameModal/EndGameModal.css';
+import '../components/EndGameModal/EndGameModal.css';
 
 
 import type { AppProps } from 'next/app'

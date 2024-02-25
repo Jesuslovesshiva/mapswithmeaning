@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
-import ClosePopups from "./ClosePopups"; // Adjust the path as necessary
+// import ClosePopups from "./ClosePopups"; // does this cause error2?
 
 // const useMap = dynamic(
 //   () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),

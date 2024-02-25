@@ -6,11 +6,13 @@ import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
 import MultiRangeSlider from "./multiRangeSlider";
-import EndGameModal from "./EndGameModal";
+// import EndGameModal from "../components/EndGameModal";
 
-const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
-  ssr: false,
-});
+// Dynamically import the Leaflet map without SSR
+const DynamicMap = dynamic(
+  () => import("../components/DynamicMap"), // Adjust the path as needed
+  { ssr: false }
+);
 
 async function fetchYearImage(year) {
   const response = await fetch(
@@ -457,7 +459,7 @@ const HomePage = () => {
           className="mapWithImageContainer"
           style={{ position: "relative", width: "100%", height: "500px" }}
         >
-          {gameEnded && (
+          {/* {gameEnded && (
             <div
               className="endGameModalContainer"
               style={{
@@ -477,14 +479,16 @@ const HomePage = () => {
                 startNextRound={startNextRound} // Ensure you have this function defined or adapt as needed
               />
             </div>
+          )} */}
+          {typeof window !== "undefined" && (
+            <DynamicMap
+              closePopupsTrigger={closePopupsTrigger}
+              countries={countryLocations}
+              cities={cities}
+              details={details}
+            />
           )}
-          {/* Adjust height as needed */}
-          <DynamicMap
-            closePopupsTrigger={closePopupsTrigger}
-            countries={countryLocations}
-            cities={cities}
-            details={details}
-          />
+
           <div
             className={`slider-imageContainer slidercontainer ${
               sliderVisibility ? "" : "hide"
