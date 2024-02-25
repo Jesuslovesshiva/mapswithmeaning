@@ -477,7 +477,7 @@ const HomePage = () => {
                 startNextRound={startNextRound} // Ensure you have this function defined or adapt as needed
               />
             </div>
-          )}{" "}
+          )}
           {/* Adjust height as needed */}
           <DynamicMap
             closePopupsTrigger={closePopupsTrigger}

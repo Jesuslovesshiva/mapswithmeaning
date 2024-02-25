@@ -424,7 +424,7 @@ const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
                 </Marker>
               );
             })}
-            <ClosePopups closePopupsTrigger={closePopupsTrigger} />;
+            {/* <ClosePopups closePopupsTrigger={closePopupsTrigger} />; */}
             {/* <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "} */}
           </MapContainer>
         )}
