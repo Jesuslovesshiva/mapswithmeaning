@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
-// import ClosePopups from "./ClosePopups"; // does this cause error2?
+import ClosePopups from "./ClosePopups"; // does this cause error2?
 
 // const useMap = dynamic(
 //   () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),
@@ -424,7 +424,7 @@ const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
                 </Marker>
               );
             })}
-            {/* <ClosePopups closePopupsTrigger={closePopupsTrigger} />; */}
+            <ClosePopups closePopupsTrigger={closePopupsTrigger} />;
             {/* <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "} */}
           </MapContainer>
         )}
