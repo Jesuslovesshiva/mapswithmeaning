@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
 import MultiRangeSlider from "./multiRangeSlider";
+import EndGameModal from "./EndGameModal";
 
 const DynamicMap = dynamic(() => import("/src/pages/DynamicMap"), {
   ssr: false,
@@ -35,17 +36,29 @@ const HomePage = () => {
   const [formInitiallySubmitted, setFormInitiallySubmitted] = useState(false);
   const [yearImage, setYearImage] = useState("/defimg.jpg");
   const [gameStarted, setGameStarted] = useState(false);
-  const [countdown, setCountdown] = useState(1);
+  // const [countdown, setCountdown] = useState(1);
   const [userYear, setUserYear] = useState("");
-  const [intervalId, setIntervalId] = useState(null);
+  // const [intervalId1, setIntervalId1] = useState(null);
   const [sliderVisibility, setSliderVisibility] = useState(false);
   const [difference, setDifference] = useState(0);
   const [gameEnded, setGameEnded] = useState(false);
   const [closePopupsTrigger, setClosePopupsTrigger] = useState(0);
   const yearInputRef = useRef(null);
+  const [points, setPoints] = useState(0);
 
   const validUserYear = parseInt(userYear) || 0; // Defaults to 0 if NaN
   const validShowYear = parseInt(showYear) || 0; // Defaults to 0 if NaN
+
+  const maxPoints = 5000; // Maximum points for a correct guess
+
+  const calculatePoints = (difference) => {
+    const pointsDeductedPerYear = 5; // Deduct 5 points for each year of difference, adjust as needed
+    const points = Math.max(maxPoints - difference * pointsDeductedPerYear, 0);
+    console.log(
+      `this is the points after  calculatePoints ${points}, because you got ${maxPoints} - ${difference} *  ${pointsDeductedPerYear} `
+    );
+    return points;
+  };
 
   const fetchAndSetLocations = async (chosenYear) => {
     // setLoading(true);
@@ -79,10 +92,12 @@ const HomePage = () => {
   };
 
   const startGame = async () => {
+    console.log("Starting game...");
     // Mark this function as 'async'
     setGameStarted(true);
+    setGameEnded(false); // Ensure the game is marked as active
+    setUserYear("");
     setSliderVisibility(false); // Ensure the slider is hidden when a new game starts
-    setCountdown(1); // Reset or start the countdown
     const newYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1;
     setShowYear(newYear.toString()); // Optionally select a new year when game starts
 
@@ -106,18 +121,50 @@ const HomePage = () => {
       setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
     }, 1000); // Adjust the duration according to your needs
 
-    // Start the countdown
-    const interval = setInterval(() => {
-      setCountdown((prevCount) => prevCount + 1);
-    }, 1000);
+    // setCountdown(1); // Reset or start the countdown
 
-    setIntervalId(interval); // Store the interval ID for later use
+    // const interval1 = setInterval(() => {
+    //   setCountdown((prevCount) => prevCount + 1);
+    // }, 1000);
+
+    // setIntervalId1(interval1); // Store the interval ID for later use
+  };
+
+  // useEffect(() => {
+  //   return () => {
+  //     if (intervalId1) {
+  //       clearInterval(intervalId1);
+  //     }
+  //   };
+  // }, [intervalId1]); // Dependency array ensures this runs when intervalId changes
+
+  const handleGameWin = () => {
+    console.log("Game won");
+    // clearInterval(intervalId1);
+    setGameStarted(false); // Mark the game as not started
+    setGameEnded(true); // Indicate that the game has ended
+    setPoints(maxPoints); // Award full points for a correct guess
+    setUserYear(showYear); // Set userYear to the correct year for display
+
+    // Add any additional logic you want to execute when the game is won, such as updating a leaderboard, etc.
   };
 
   // Update your game logic as needed. Here's an example of handling a game loss:
-  const handleGameLoss = () => {
+  const handleGameLoss = (guessedYear) => {
+    console.log("Game lost");
     setGameStarted(false); // Mark the game as not started
     setGameEnded(true);
+
+    const difference = Math.abs(parseInt(showYear, 10) - guessedYear);
+    console.log(`Calculated difference: ${difference}`); // Add this line
+    const pointsEarned = calculatePoints(difference); // Calculate the points based on the difference
+    console.log(
+      `You were off by ${difference} years. This is the valid show year: ${validShowYear} and this is the user's year: ${guessedYear}`
+    );
+    setDifference(difference);
+    console.log(`You got that many points ${pointsEarned} `);
+
+    setPoints(pointsEarned); // Update the points state
 
     setClosePopupsTrigger((currentCount) => currentCount + 1);
 
@@ -133,29 +180,33 @@ const HomePage = () => {
       setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
     }, 1000); // Adjust the duration according to your needs
 
-    // Calculate the absolute difference between the two years
-    // Calculate the difference
-    // Assuming validShowYear and validUserYear have been set correctly
-
-    const difference = Math.abs(validShowYear - validUserYear); // This calculates the absolute difference
-
-    // Then you can alert the user
-    // alert(`You were off by ${difference} years.`);
-
-    setYear(""); // Clear the input field after submission
-    // console.log(
-    //   `You were off by ${difference} years. this is the validshowyear ${validShowYear} and this is the validUserYear ${validUserYear} `
-    // );
+    setYear("");
   };
+
+  const startNextRound = () => {
+    setGameStarted(true); // Start the new game
+    setGameEnded(false); // No longer show the game ended state
+    setUserYear(""); // Clear the user's year guess
+    setYear(""); // Clear the input field for year
+    setSliderVisibility(false); // If you're using a slider, hide it for the new round
+    setSimulateHoverEffect(false); // If you use hover effects, reset this
+    // Reset countdown if you're using one, and restart it
+    // clearInterval(intervalId1); // Clear existing interval
+    // const newIntervalId1 = setInterval(() => {
+    //   setCountdown((prevCount) => prevCount + 1);
+    // }, 1000); // Adjust interval as needed
+    // setIntervalId1(newIntervalId1); // Set new interval ID
+    // Generate a new year for the game, fetch new locations and image
+    const newYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1; // Adjust range as needed
+    setShowYear(newYear.toString());
+    fetchAndSetLocations(newYear.toString());
+    fetchYearImage(newYear.toString()).then((imageData) => {
+      setYearImage(imageData.image_url || "/defimg.jpg"); // Set new year image or default
+    });
+  };
+
   // Provide feedback for wrong guess    setYear(""); // Optionally clear the input field after wrong guess
   // Keep the game running, so don't change gameStarted or countdown
-
-  // useEffect(() => {
-  //   // Return a cleanup function from useEffect
-  //   return () => {
-  //     clearInterval(interval); // Clear the interval to prevent memory leaks
-  //   };
-  // }, []); // Empty dependency array means this runs once on mount and once on unmount
 
   // Function to handle dice click
   const handleDiceClick = async () => {
@@ -183,48 +234,48 @@ const HomePage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
-    // Check if the game has started
 
-    const inputYear = parseInt(year);
-    const gameYear = parseInt(showYear); // Ensure this is also a valid number
+    // Parse the year from the input
+    const inputYear = parseInt(year, 10); // Ensure parsing is done in base 10
+    // Check if the input year is a valid number
+    if (isNaN(inputYear)) {
+      alert("Please enter a valid year.");
+      return; // Exit the function if the year is not valid
+    }
 
+    // Blur the year input field to hide the keyboard on mobile devices
     if (yearInputRef.current) yearInputRef.current.blur();
 
+    // If the game has started, compare the input year with the actual year
     if (gameStarted) {
-      if (inputYear === gameYear) {
-        // Check the guess
-        clearInterval(intervalId); // Use the intervalId from state
-        setGameStarted(false); // End the game
-        alert("That is Correct! The game has ended."); // Provide feedback
-        setYear(""); // Clear the input field after successful guess
-        // Optionally reset other game states here
+      setUserYear(inputYear); // Update the userYear state with the validated input first
+      if (inputYear === parseInt(showYear, 10)) {
+        // Check if the guess is correct
+        handleGameWin(); // Call the game win function
       } else {
-        setUserYear(inputYear.toString()); // Update the userYear state with the validated input
-        handleGameLoss(); // Call the game loss function
+        setUserYear(inputYear); // Update the userYear state with the validated input
+        handleGameLoss(inputYear); // Call the game loss function if the guess is wrong
+        console.log(inputYear);
       }
     } else {
-      setSliderVisibility(false); // Ensure the slider is hidden when a new game starts
-      // Normal year submission logic when the game is not active
-      setFormInitiallySubmitted(true); // Set the opacity controlling state to true
+      // Game logic when the game is not active
+      setSliderVisibility(false); // Hide the slider when the game is not active
+      setFormInitiallySubmitted(true); // Indicate that the form has been initially submitted
       setIsFilled(false); // Reset the filled state
       setSimulateHoverEffect(true); // Trigger the simulated hover effect
-      setClosePopupsTrigger((currentCount) => currentCount + 1);
+      setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
 
+      // Delay to remove the simulated hover effect
       setTimeout(() => {
-        setSimulateHoverEffect(false); // Remove the simulated hover effect after a delay
-      }, 1000); // Adjust the duration according to your needs
+        setSimulateHoverEffect(false);
+      }, 1000);
 
+      // If the year input field contains a valid year, proceed to fetch and set location data
       if (year.trim().length > 0) {
         await fetchAndSetLocations(year); // Fetch and set location data for the year
         const imageData = await fetchYearImage(year); // Fetch the image data for the year
-        if (imageData && imageData.image_url !== "No image available") {
-          setYearImage(imageData.image_url); // Update the state with the new image URL
-        } else {
-          setYearImage("/defimg.jpg"); // Reset the image URL if none is available
-        }
+        setYearImage(imageData.image_url || "/defimg.jpg"); // Update the state with the new image URL or default
         setShowYear(year); // Update the displayed year
-        const newUserYear = parseInt(event.target.value); // Or however you obtain the new year value
-        setUserYear(newUserYear); // Update the state
         setYear(""); // Clear the input field after submission
       }
     }
@@ -234,19 +285,15 @@ const HomePage = () => {
     setIsFilled(year.trim().length > 0);
   }, [year]); // This useEffect will update isFilled whenever 'year' changes
 
-  useEffect(() => {
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [intervalId]); // Dependency array ensures this runs when intervalId changes
-
   const handleChange = (e) => {
     const inputValue = e.target.value;
     setYear(inputValue); // This keeps the original logic intact
     setIsFilled(inputValue.length > 0); // Additionally sets isFilled based on whether the input has content
   };
+
+  useEffect(() => {
+    console.log(`Updated difference in HomePage: ${difference}`);
+  }, [difference]);
 
   return (
     <div>
@@ -267,6 +314,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
+
             <div className="flex justify-center items-center mainlogo mx-20 my-10 min-w-[400px] max-w-[600px]">
               <Image
                 src="/png/logo-no-background.png"
@@ -285,27 +333,49 @@ const HomePage = () => {
         </div>
         <div className="on-small-screen">
           <div className="row3 w-full flex justify-between items-center px-8 pb-8">
-            <div
-              className={`text-gray-500 text-3xl font-bold pl-6 on-small-screen flex  ${
-                formInitiallySubmitted ? "opacity-visible" : "opacity-hidden"
-              }`}
-            >
-              <div
-                className={`SMN_effect-64 ${
-                  simulateHoverEffect ? "simulated-hover-64" : ""
-                }`}
-              >
-                <a className={`custom-underline ${gameStarted ? "hide" : ""}`}>
-                  Year {showYear}
-                </a>
-              </div>
-            </div>
             <div className="countdown text-gray-500 text-3xl font-bold pl-6 on-small-screen flex mx-5 ml-auto">
               <div>
-                <a className="countdown custom-underline ml-auto">1</a>
+                <a className="countdown custom-underline ml-auto"></a>
               </div>
             </div>
-
+            <div className="text-gray-500 text-3xl font-bold  flex on-small-screen">
+              <div
+                className={` mr-5 pl-6 ${
+                  formInitiallySubmitted ? "opacity-visible" : "opacity-hidden"
+                }`}
+              >
+                <div
+                  className={`SMN_effect-64 ${
+                    simulateHoverEffect ? "simulated-hover-64" : ""
+                  }`}
+                >
+                  <a
+                    className={`custom-underline ${gameStarted ? "hide" : ""}`}
+                  >
+                    Year {showYear}
+                  </a>
+                </div>
+              </div>
+              {/* <div
+                className={` text-md mr-2 pl-1 on-small-screen 2${
+                  formInitiallySubmitted
+                    ? "opacity-hidden2"
+                    : "opacity-visible2"
+                }`}
+              >
+                <div
+                  className={`SMN_effect-64 ${
+                    simulateHoverEffect ? "simulated-hover-64" : ""
+                  }`}
+                >
+                  <a
+                    className={`custom-underline ${gameStarted ? "hide" : ""}`}
+                  >
+                    Maps with meaning
+                  </a>
+                </div>
+              </div> */}
+            </div>
             <form
               onSubmit={handleSubmit}
               className="max-w-md menu align-center"
@@ -323,8 +393,8 @@ const HomePage = () => {
                   max="2024"
                   title=""
                   required
-                  className={`inputClass h-10 pl-5 pr-10 w-full rounded-lg text-sm focus:outline-none border-2px
-                text-center  border-gray-100 bg-grey-300 button-3 ${
+                  className={`inputClass h-10 pl-5 pr-5 w-full rounded-lg text-sm focus:outline-none border-2px
+                text-center border-2 border-gray-400 button-3 ${
                   isFilled ? "button-3" : "button-3"
                 }`} // Apply conditional class for  effects
                   onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
@@ -345,7 +415,7 @@ const HomePage = () => {
             <div className={`playbuttondiv ${gameStarted ? "hidden" : ""}`}>
               <button
                 onClick={startGame}
-                className=" rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2"
+                className=" rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2 border-gray-400"
               >
                 <figure>PLAY</figure>
               </button>
@@ -353,7 +423,7 @@ const HomePage = () => {
             <div
               className={`countdown ml-auto mr-3 ${gameStarted ? "show" : ""}`}
             >
-              {countdown}
+              {/* {countdown} */}
             </div>
             <div className="dice">
               <button
@@ -387,7 +457,27 @@ const HomePage = () => {
           className="mapWithImageContainer"
           style={{ position: "relative", width: "100%", height: "500px" }}
         >
-          {" "}
+          {gameEnded && (
+            <div
+              className="endGameModalContainer"
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 999,
+              }}
+            >
+              <EndGameModal
+                key={`endGameModal-${Date.now()}`} // This forces React to remount the component
+                onClose={() => setGameEnded(false)}
+                gameEnded={gameEnded}
+                difference={difference}
+                points={points}
+                startNextRound={startNextRound} // Ensure you have this function defined or adapt as needed
+              />
+            </div>
+          )}{" "}
           {/* Adjust height as needed */}
           <DynamicMap
             closePopupsTrigger={closePopupsTrigger}
@@ -429,6 +519,22 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      <div className="fiimageContainer">
+        <div className="flex justify-center items-center ">
+          <div className="flex item-center yearImageContainer hover09 ">
+            <figure className="figureYear">
+              <img
+                src={yearImage}
+                alt={`Image for the year ${showYear}`}
+                style={{ width: "500px", height: "400px" }} // Adjust as needed
+                className="fwikiimg"
+              />
+            </figure>
+          </div>
+        </div>
+      </div>
+
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4">
         <div className="dice2">
           <button
@@ -449,20 +555,6 @@ const HomePage = () => {
           </button>
           <div className="divider text-color-bg">
             <p className="text-gray-300">go to a random Year</p>
-          </div>
-        </div>
-      </div>
-      <div className="fiimageContainer">
-        <div className="flex justify-center items-center ">
-          <div className="flex item-center yearImageContainer hover09 ">
-            <figure className="figureYear">
-              <img
-                src={yearImage}
-                alt={`Image for the year ${showYear}`}
-                style={{ width: "500px", height: "400px" }} // Adjust as needed
-                className="fwikiimg"
-              />
-            </figure>
           </div>
         </div>
       </div>

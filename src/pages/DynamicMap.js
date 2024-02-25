@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import parse from "html-react-parser";
+import ClosePopups from "./ClosePopups"; // Adjust the path as necessary
 
 // const useMap = dynamic(
 //   () => import("react-leaflet").then((mod) => ({ default: mod.useMap })),
@@ -423,6 +424,7 @@ const DynamicMap = ({ countries, cities, details, closePopupsTrigger }) => {
                 </Marker>
               );
             })}
+            <ClosePopups closePopupsTrigger={closePopupsTrigger} />;
             {/* <MapEffect closePopupsTrigger={closePopupsTrigger} />{" "} */}
           </MapContainer>
         )}

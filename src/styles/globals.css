@@ -132,19 +132,18 @@ body {
   right: 0px;
   width: 400px;
   height: 0%;
-  z-index: 1000;
+  z-index: 800;
 }
 
 .slider-imageContainer {
   position: absolute;
-
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
   top: -10%;
   width: 100px; /* Need a specific value to work */
-  z-index: 1000;
+  z-index: 99;
 }
 
 /* Ensure the parent container does not force a larger width */
@@ -214,6 +213,11 @@ body {
   margin-left: auto;
   dispaly: flex;
 }
+
+.play-button {
+  letter-spacing: 1px;
+}
+
 .play-button figure:hover {
   color: var(--custom-teal);
   dispaly: flex;
@@ -302,7 +306,6 @@ body {
 .button-3 {
   background-color: transparent;
   color: var(--custom-peach);
-  border: 2px solid #ffff;
   transition: all 0.3s ease;
 }
 
@@ -311,8 +314,11 @@ body {
   color: var(--custom-peach);
 }
 
+.mapswithmeaning {
+  display: flex;
+}
+
 .SMN_effect-64 a {
-  margin-right: 1em;
   position: relative;
   z-index: 2;
 }
@@ -357,13 +363,11 @@ body {
 .opacity-hidden {
   opacity: 0;
   transition: opacity 1s ease; /* Smooth transition to visible */
-  display: none;
 }
 
 .opacity-visible {
   opacity: 1;
   transition: opacity 1s ease; /* Ensure the transition is smooth */
-  display: flex;
 }
 
 /* Sepia */
@@ -521,7 +525,7 @@ body {
     margin-right: auto;
     top: 90%;
     right: 60%;
-    z-index: 999;
+    z-index: 800;
   }
   .slider {
     color: black;
@@ -545,7 +549,7 @@ body {
     margin-right: auto;
     top: 90%;
     right: 40%;
-    z-index: 999;
+    z-index: 99;
   }
   .iiimageContainer {
     width: 200px;
@@ -575,12 +579,23 @@ body {
 }
 
 @media (max-width: 550px) {
+  .iiimageContainer {
+    position: relative;
+    z-index: -1;
+  }
+
+  .dice {
+    display: none;
+  }
+  .dice2 {
+    position: relative;
+    z-index: 800;
+    display: flex;
+  }
   .row3 {
-    padding: 12px 10px;
+    padding: 16px;
   }
-  .Map {
-    height: 420px !important;
-  }
+
   .slider-imageContainer {
     right: 0%;
 
@@ -590,7 +605,7 @@ body {
   }
 
   input[type="number"] {
-    width: 150px;
+    width: 110px;
     caret-color: transparent;
   }
 
@@ -634,8 +649,8 @@ body {
   }
 }
 @media (max-width: 450px) {
-  .Map {
-    height: 405px !important;
+  .row3 {
+    padding: 16px 12px;
   }
 
   .slider-imageContainer {
@@ -648,12 +663,11 @@ body {
 }
 
 @media (max-width: 370px) {
+  .row3 {
+    padding: 16px 10px;
+  }
   input[type="number"] {
     width: 100vw0px;
-  }
-
-  button[type="submit"] {
-    display: none;
   }
 }
 

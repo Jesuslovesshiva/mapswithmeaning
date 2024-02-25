@@ -1,0 +1,127 @@
+:root {
+  --custom-orange: theme("colors.custom-orange");
+  --custom-peach: theme("colors.custom-peach");
+  --custom-white: #d1d5db;
+  --custom-teal: theme("colors.custom-teal"); /* bg right now */
+  --custom-bg: theme("colors.custom-bg"); /* bg right now */
+  --custom-black: theme("colors.custom-black");
+}
+
+.btn {
+  padding: 10px 50px;
+  border-radius: 50px;
+  background-color: var(--custom-teal);
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.popup1 {
+  font-size: 1.2rem;
+  width: 60vw;
+  background-color: rgb(45, 55, 72, 0.95) !important;
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.05);
+  text-align: center;
+  padding: 0 20px 20px;
+  color: var(--custom-peach);
+  opacity: 0; /* Start invisible */
+  visibility: hidden; /* Start hidden */
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.popup-close-button {
+  font: 16px/24px Tahoma, Verdana, sans-serif;
+  position: absolute;
+  top: 1px; /* Adjust as needed */
+  right: 8px; /* Adjust as needed */
+  background: none;
+  border: none;
+  color: var(--custom-white); /* Or any color you want for the 'X' */
+  font-size: 1rem; /* Adjust as needed */
+  cursor: pointer;
+}
+
+.popup-open1 {
+  top: 50%;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup1.show {
+  display: flex; /* or block, depending on your design */
+  opacity: 1; /* Fully visible */
+  visibility: visible; /* Make it visible */
+}
+
+.popup1.hide {
+  opacity: 0; /* Fade to transparent */
+  visibility: hidden; /* Make the element not visible */
+  transition: opacity 0.5s, visibility 0.5s; /* Ensure this is the same as the .popup1 transition */
+}
+
+p strong {
+  margin-top: 2px;
+  color: var(--custom-peach);
+}
+.popup1 p {
+  margin-top: 10px;
+}
+
+.cacao {
+  opacity: 0.95;
+  border-radius: 100%;
+  min-width: 100px;
+}
+
+.popup1 .material-symbols-outlined {
+  border: 3px solid var(--custom-bg);
+  font-size: 4rem;
+  margin-top: -20%;
+  border-radius: 10rem;
+  color: var(--clr-peach);
+  box-shadow: 0 6px 3px rgba(0, 0, 0, 0.2);
+}
+
+.popup1 .nextround {
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+  padding: 5px 0;
+  background: var(--custom-teal);
+  color: var(--custom-white);
+  border: 0;
+  outline: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 1250px) {
+}
+
+@media (max-width: 850px) {
+  .popup1 {
+    width: 30vw;
+  }
+}
+
+@media (max-width: 700px) {
+  .popup1 {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 550px) {
+}
+@media (max-width: 450px) {
+}
+
+@media (max-width: 370px) {
+  .popup1 {
+    width: 70vw;
+  }
+}

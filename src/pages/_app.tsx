@@ -1,5 +1,7 @@
 import '../styles/globals.css'
 import './multiRangeSlider/multiRangeSlider.css';
+import './EndGameModal/EndGameModal.css';
+
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
