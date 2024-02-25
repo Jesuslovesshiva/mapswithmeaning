@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
 import MultiRangeSlider from "./multiRangeSlider";
-// import EndGameModal from "../components/EndGameModal";
+import EndGameModal from "../components/EndGameModal";
 
 // Dynamically import the Leaflet map without SSR
 const DynamicMap = dynamic(
@@ -459,7 +459,7 @@ const HomePage = () => {
           className="mapWithImageContainer"
           style={{ position: "relative", width: "100%", height: "500px" }}
         >
-          {/* {gameEnded && (
+          {gameEnded && (
             <div
               className="endGameModalContainer"
               style={{
@@ -479,7 +479,7 @@ const HomePage = () => {
                 startNextRound={startNextRound} // Ensure you have this function defined or adapt as needed
               />
             </div>
-          )} */}
+          )}
           {typeof window !== "undefined" && (
             <DynamicMap
               closePopupsTrigger={closePopupsTrigger}
