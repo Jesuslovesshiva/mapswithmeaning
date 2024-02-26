@@ -8,8 +8,19 @@ const EndGameModal = ({
   points,
   startNextRound,
   setSliderVisibility,
+  startPreloading,
 }) => {
   const [isClosed, setIsClosed] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false); // New state for image loading
+
+  useEffect(() => {
+    if (startPreloading) {
+      // Logic here if need to do something when preloading starts
+
+      setImageLoaded(true); // Pretend the image is ready; adjust based on actual logic
+    }
+  }, [startPreloading]);
+
   const handleClose = () => {
     setIsClosed(true); // This will trigger the fade-out effect
     setTimeout(() => {
@@ -56,16 +67,20 @@ const EndGameModal = ({
         alignItems: "center",
       }}
     >
-      <span className="material-symbols-outlined mb-5">
+      <span className="material-symbols-outlined mb-5 border-r">
         <Image
-          src="/cacao1.jpg"
-          alt="cacao"
-          className="cacao"
-          style={{}}
+          src="/cacao1.webp"
+          alt="Cacao"
           width={85}
           height={85}
+          className="rounded-full"
+          onLoad={() => {
+            console.log("Image has completed loading");
+            setImageLoaded(true);
+          }}
         />
       </span>
+
       <button className="popup-close-button" onClick={handleClose}>
         ×
       </button>
@@ -86,4 +101,4 @@ const EndGameModal = ({
   );
 };
 
-export default EndGameModal;
+export default React.memo(EndGameModal);

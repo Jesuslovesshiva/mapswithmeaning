@@ -8,6 +8,10 @@
 .leaflet-control-attribution {
   opacity: 0;
 }
+.input {
+  z-index: 9999;
+}
+
 /* Hide the up and down arrows for input type number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -93,14 +97,6 @@ body {
   text-decoration-thickness: 2px; /* Adjust thickness as needed */
 }
 
-.hide {
-  display: none;
-}
-
-.menu {
-  margin-left: 0; /* Initial state */
-}
-
 .countdown {
   display: none; /* Initially hidden */
   color: white;
@@ -109,10 +105,6 @@ body {
 
 .game-started .custom-underline {
   display: none;
-}
-
-.game-started .menu {
-  margin-left: auto;
 }
 
 .countdown.show {
@@ -210,7 +202,7 @@ body {
   }
 }
 .playbuttondiv {
-  margin-left: auto;
+  /* margin-left: auto; */
   dispaly: flex;
 }
 
@@ -221,6 +213,12 @@ body {
 .play-button figure:hover {
   color: var(--custom-teal);
   dispaly: flex;
+}
+
+.play-button1 {
+  /* margin-right: 1em; */
+
+  letter-spacing: 1px;
 }
 
 .hover15 figure {
@@ -259,6 +257,12 @@ body {
 .hover15 figure:hover::before {
   -webkit-animation: circle 0.55s forwards; /* Use forwards to retain final state */
   animation: circle 0.55s forwards; /* Use forwards to retain final state */
+}
+
+.menu {
+  z-index: 9999;
+  /* margin-left: auto; */
+  margin-right: 5.4em;
 }
 
 @-webkit-keyframes circle {
@@ -346,7 +350,7 @@ body {
 }
 
 .SMN_effect-64 a:after {
-  background-color: #fff; /* Change this as necessary */
+  background-color: #9ab2b2; /* Change this as necessary */
   z-index: -2;
   transform: scale(0.9);
 }
@@ -362,12 +366,12 @@ body {
 
 .opacity-hidden {
   opacity: 0;
-  transition: opacity 1s ease; /* Smooth transition to visible */
+  transition: opacity 1.5s ease; /* Smooth transition to visible */
 }
 
 .opacity-visible {
   opacity: 1;
-  transition: opacity 1s ease; /* Ensure the transition is smooth */
+  transition: opacity 1.5s ease; /* Ensure the transition is smooth */
 }
 
 /* Sepia */
@@ -519,7 +523,14 @@ body {
   margin-bottom: 2em;
 } */
 
+.hide {
+  opacity: 0;
+}
+
 @media (max-width: 1250px) {
+  .row3 {
+    justify-content: space-around;
+  }
   .iiimageContainer {
     width: 300px;
   }
@@ -534,6 +545,20 @@ body {
 }
 
 @media (max-width: 850px) {
+  .mainlogo {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+  .row3 {
+    margin: 0px 50px;
+    padding-bottom: 1.5em;
+    justify-content: space-between;
+  }
+
+  input::placeholder {
+    opacity: 0;
+  }
+
   .iiimageContainer {
     width: 200px;
   }
@@ -562,6 +587,13 @@ body {
 }
 
 @media (max-width: 550px) {
+  .row3 {
+    margin: 0px 40px;
+    padding-bottom: 1.5em;
+    justify-content: space-between;
+    z-index: 999;
+  }
+
   .iiimageContainer {
     position: relative;
     z-index: -1;
@@ -574,9 +606,6 @@ body {
     position: relative;
     z-index: 800;
     display: flex;
-  }
-  .row3 {
-    padding: 16px;
   }
 
   input[type="number"] {
@@ -609,8 +638,7 @@ body {
   .hide-on-small-screen {
     display: none;
   }
-  .on-small-screen {
-  }
+
   .SMN_effect-64 {
     font-size: 0.85em;
   }
@@ -625,7 +653,9 @@ body {
 }
 @media (max-width: 450px) {
   .row3 {
-    padding: 16px 12px;
+    margin: 0px 20px;
+    justify-content: space-between;
+    z-index: 999;
   }
 
   input[type="number"] {
@@ -635,7 +665,9 @@ body {
 
 @media (max-width: 370px) {
   .row3 {
-    padding: 16px 10px;
+    margin: 0px 10px;
+    justify-content: space-between;
+    z-index: 999;
   }
   input[type="number"] {
     width: 100vw0px;

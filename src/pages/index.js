@@ -5,14 +5,19 @@ import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
-import MultiRangeSlider from "../components/multiRangeSlider";
-import EndGameModal from "../components/EndGameModal";
+
+const MultiRangeSlider = dynamic(() =>
+  import("../components/multiRangeSlider")
+);
+
+const EndGameModal = dynamic(() => import("../components/EndGameModal"));
 
 // Dynamically import the Leaflet map without SSR
-const DynamicMap = dynamic(
-  () => import("../components/DynamicMap"), // Adjust the path as needed
-  { ssr: false }
-);
+const DynamicMap = dynamic(() => import("../components/DynamicMap"), {
+  ssr: false,
+});
+
+const MemoizedEndGameModal = React.memo(EndGameModal);
 
 async function fetchYearImage(year) {
   const response = await fetch(
@@ -26,17 +31,19 @@ async function fetchYearImage(year) {
 }
 
 const HomePage = () => {
+  const [startPreloading, setStartPreloading] = useState(false);
+
   const [year, setYear] = useState("");
   const [content, setContent] = useState("");
   const [locations, setLocations] = useState([]);
   const [countryLocations, setCountryLocations] = useState([]);
   const [details, setDetails] = useState({});
-  const [showYear, setShowYear] = useState("");
+  const [showYear, setShowYear] = useState("0000");
   const [cities, setCities] = useState([]);
   const [isFilled, setIsFilled] = useState(false);
   const [simulateHoverEffect, setSimulateHoverEffect] = useState(false);
   const [formInitiallySubmitted, setFormInitiallySubmitted] = useState(false);
-  const [yearImage, setYearImage] = useState("/defimg.jpg");
+  const [yearImage, setYearImage] = useState("/defimg.webp");
   const [gameStarted, setGameStarted] = useState(false);
   // const [countdown, setCountdown] = useState(1);
   const [userYear, setUserYear] = useState("");
@@ -95,28 +102,30 @@ const HomePage = () => {
 
   const startGame = async () => {
     console.log("Starting game...");
-    // Mark this function as 'async'
+
     setGameStarted(true);
+
     setGameEnded(false); // Ensure the game is marked as active
     setUserYear("");
-    setSliderVisibility(false); // Ensure the slider is hidden when a new game starts
+
+    setSliderVisibility(false);
+    setStartPreloading(true);
     const newYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1;
-    setShowYear(newYear.toString()); // Optionally select a new year when game starts
+    setShowYear(newYear.toString());
 
-    await fetchAndSetLocations(newYear.toString()); // Correct use of 'await' within an 'async' function
-    setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
+    await fetchAndSetLocations(newYear.toString());
+    setClosePopupsTrigger((prevCount) => prevCount + 1);
 
-    // Fetch and set the year image asynchronously
     try {
       const imageData = await fetchYearImage(newYear.toString());
       if (imageData && imageData.image_url !== "No image available") {
         setYearImage(imageData.image_url);
       } else {
-        setYearImage("/defimg.jpg"); // Default image if none is available or on error
+        setYearImage("/defimg.webp"); // Default image if none is available or on error
       }
     } catch (error) {
       console.error("Failed to fetch year image:", error);
-      setYearImage("/defimg.jpg"); // Default image on catch
+      setYearImage("/defimg.webp"); // Default image on catch
     }
 
     setSimulateHoverEffect(true); // Trigger the simulated hover effect
@@ -156,6 +165,7 @@ const HomePage = () => {
   // Update your game logic as needed. Here's an example of handling a game loss:
   const handleGameLoss = (guessedYear) => {
     console.log("Game lost");
+
     setGameStarted(false); // Mark the game as not started
     setGameEnded(true);
     setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
@@ -177,8 +187,6 @@ const HomePage = () => {
     setShowYear(showYear); // Update the displayed year
     setFormInitiallySubmitted(true); // Set the opacity controlling state to true
 
-    // Normal year submission logic when the game is not active
-    // setFormInitiallySubmitted(true); // Set the opacity controlling state to true
     setSimulateHoverEffect(true); // Trigger the simulated hover effect
 
     setTimeout(() => {
@@ -188,7 +196,7 @@ const HomePage = () => {
     setYear("");
   };
 
-  const startNextRound = () => {
+  const startNextRound = async () => {
     setGameStarted(true); // Start the new game
     setGameEnded(false); // No longer show the game ended state
     setUserYear(""); // Clear the user's year guess
@@ -204,12 +212,23 @@ const HomePage = () => {
     // }, 1000); // Adjust interval as needed
     // setIntervalId1(newIntervalId1); // Set new interval ID
     // Generate a new year for the game, fetch new locations and image
-    const newYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1; // Adjust range as needed
+    const newYear = Math.floor(Math.random() * (2024 - 1 + 1)) + 1;
     setShowYear(newYear.toString());
-    fetchAndSetLocations(newYear.toString());
-    fetchYearImage(newYear.toString()).then((imageData) => {
-      setYearImage(imageData.image_url || "/defimg.jpg"); // Set new year image or default
-    });
+
+    await fetchAndSetLocations(newYear.toString());
+    setClosePopupsTrigger((prevCount) => prevCount + 1);
+
+    try {
+      const imageData = await fetchYearImage(newYear.toString());
+      if (imageData && imageData.image_url !== "No image available") {
+        setYearImage(imageData.image_url);
+      } else {
+        setYearImage("/defimg.webp"); // Default image if none is available or on error
+      }
+    } catch (error) {
+      console.error("Failed to fetch year image:", error);
+      setYearImage("/defimg.webp"); // Default image on catch
+    }
   };
 
   // Provide feedback for wrong guess    setYear(""); // Optionally clear the input field after wrong guess
@@ -229,7 +248,7 @@ const HomePage = () => {
     if (imageData && imageData.image_url !== "No image available") {
       setYearImage(imageData.image_url); // Update the state with the new image URL
     } else {
-      setYearImage("/defimg.jpg"); // Reset the image URL if none is available
+      setYearImage("/defimg.webp"); // Reset the image URL if none is available
     }
     setShowYear(randomYear.toString()); // Update the displayed year
 
@@ -277,11 +296,14 @@ const HomePage = () => {
         setSimulateHoverEffect(false);
       }, 1000);
 
-      // If the year input field contains a valid year, proceed to fetch and set location data
       if (year.trim().length > 0) {
         await fetchAndSetLocations(year); // Fetch and set location data for the year
         const imageData = await fetchYearImage(year); // Fetch the image data for the year
-        setYearImage(imageData.image_url || "/defimg.jpg"); // Update the state with the new image URL or default
+        if (imageData && imageData.image_url !== "No image available") {
+          setYearImage(imageData.image_url); // Update the state with the new image URL
+        } else {
+          setYearImage("/defimg.webp"); // Reset the image URL if none is available
+        }
         setShowYear(year); // Update the displayed year
         setYear(""); // Clear the input field after submission
       }
@@ -303,275 +325,244 @@ const HomePage = () => {
   }, [difference]);
 
   return (
-    <div>
-      <div className="forfooter flex flex-col mb-8 bg-custom-bg ">
-        <div className="flex flex-col items-center ">
-          <div className="flex justify-center items-center ">
-            <div className="tiimageContainer">
-              <div className="flex justify-center items-center ">
-                <div className="flex   item-center yearImageContainer hover09 topimg">
-                  <figure className="figureYear ">
-                    <img
-                      src={yearImage}
-                      alt={`Image for the year ${showYear}`}
-                      style={{ width: "500px", height: "120px" }} // Adjust as needed
-                      className="twikiimg"
+    <React.StrictMode>
+      <div>
+        <div className="forfooter mb-8 bg-custom-bg ">
+          <div className="">
+            <div className="  ">
+              <div className="tiimageContainer">
+                <div className="">
+                  <div className="flex   item-center yearImageContainer hover09 topimg">
+                    <figure className="figureYear ">
+                      <img
+                        src={yearImage}
+                        alt={`Image for the year ${showYear}`}
+                        style={{ width: "500px", height: "120px" }} // Adjust as needed
+                        className="twikiimg"
+                      />
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-center  z-40">
+                <div className="flex justify-center mainlogo mx-20 my-10 min-w-[400px] max-w-[600px]">
+                  <Image
+                    src="/logo-no-background.webp"
+                    alt="Logo"
+                    sizes="41vw"
+                    className="mainlogo"
+                    style={{
+                      width: "41%",
+                      height: "auto",
+                    }}
+                    width={150}
+                    height={150}
+                  />
+                </div>
+
+                <form onSubmit={handleSubmit} className="max-w-md  ">
+                  <div className="input relative text-gray-600  align-center ">
+                    <input
+                      ref={yearInputRef}
+                      type="number"
+                      value={year}
+                      onChange={handleChange}
+                      placeholder="Enter a year (e.g., 1519)"
+                      style={{ fontFamily: "arial" }}
+                      maxLength="4"
+                      min="1"
+                      max="2024"
+                      title=""
+                      required
+                      className={`inputClass h-10 pl-5 pr-5 w-full rounded-lg text-sm focus:outline-none border-2px
+                text-center border-2 border-gray-400 button-3  ${
+                  isFilled ? "button-3" : "button-3"
+                }`} // Apply conditional class for  effects
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 4))
+                      } // Restricts input to 4 digits
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-1 top-1 mt-2 mr-3"
+                    >
+                      <svg
+                        className="h-4 w-4 fill-current"
+                        viewBox="0 0 56.966 56.966"
+                      >
+                        <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+
+                <div className=" flex w-screen -mt-10 z-99">
+                  <div className="flex   w-screen">
+                    <div className="row3  justify-evenly w-screen flex  pb-8">
+                      <div className="text-gray-500 text-3xl font-bold  ">
+                        <div
+                          className={` ${
+                            formInitiallySubmitted
+                              ? "opacity-visible"
+                              : "opacity-hidden"
+                          }`}
+                        >
+                          <div
+                            className={`SMN_effect-64 ${
+                              simulateHoverEffect ? "simulated-hover-64" : ""
+                            }`}
+                          >
+                            <a
+                              className={`custom-underline ${
+                                gameStarted ? "hide" : ""
+                              }`}
+                            >
+                              Year {showYear}
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        className={` playbuttondiv ${
+                          gameStarted ? "hidden" : ""
+                        }`}
+                      >
+                        <button
+                          onClick={startGame}
+                          className=" rounded-lg text-xl on-small-screen play-button1 hover15 text-custom-peach border-2 border-gray-400"
+                        >
+                          <figure>PLAY</figure>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* {showLoadingBar && <span className="_it4vx _72fik"></span>} */}
+
+          <div
+            dangerouslySetInnerHTML={{ __html: content }}
+            className="text-white"
+          />
+
+          <div
+            className="mapWithImageContainer"
+            style={{ position: "relative", width: "100%", height: "500px" }}
+          >
+            {gameEnded && (
+              <div
+                className="endGameModalContainer"
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 999,
+                }}
+              >
+                <MemoizedEndGameModal
+                  key={`endGameModal-${Date.now()}`} // This forces React to remount the component
+                  onClose={() => setGameEnded(false)}
+                  gameEnded={gameEnded}
+                  difference={difference}
+                  points={points}
+                  startNextRound={startNextRound}
+                  setSliderVisibility={setSliderVisibility}
+                  startPreloading={startPreloading}
+                />
+              </div>
+            )}
+            {typeof window !== "undefined" && (
+              <DynamicMap
+                closePopupsTrigger={closePopupsTrigger}
+                countries={countryLocations}
+                cities={cities}
+                details={details}
+              />
+            )}
+
+            <div
+              className={`slider-imageContainer slidercontainer ${
+                sliderVisibility ? "" : "hide"
+              }`}
+            >
+              <div className="flex justify-center items-center">
+                <div className="flex item-center  ">
+                  <figure className="figureYear">
+                    <MultiRangeSlider
+                      min={validUserYear}
+                      max={validShowYear}
+                      onChange={() => {}}
+                      sliderVisibility={sliderVisibility}
+                      disabled={true} // This should make the slider read-only; adjust based on your actual slider component
                     />
                   </figure>
                 </div>
               </div>
             </div>
-
-            <div className="flex justify-center items-center mainlogo mx-20 my-10 min-w-[400px] max-w-[600px]">
-              <Image
-                src="/png/logo-no-background.png"
-                alt="Logo"
-                sizes="41vw"
-                className="mainlogo"
-                style={{
-                  width: "41%",
-                  height: "auto",
-                }}
-                width={150}
-                height={150}
-              />
+            <div className="iiimageContainer">
+              <div className="flex justify-center items-center ">
+                <div className="flex item-center yearImageContainer hover09 ">
+                  <figure className="figureYear">
+                    <img
+                      src={yearImage}
+                      alt={`Image for the year ${showYear}`}
+                      style={{ width: "400px", height: "500px" }} // Adjust as needed
+                      className="wikiimg"
+                    />
+                  </figure>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="on-small-screen">
-          <div className="row3 w-full flex justify-between items-center px-8 pb-8">
-            <div className="countdown text-gray-500 text-3xl font-bold pl-6 on-small-screen flex mx-5 ml-auto">
-              <div>
-                <a className="countdown custom-underline ml-auto"></a>
-              </div>
-            </div>
-            <div className="text-gray-500 text-3xl font-bold  flex on-small-screen">
-              <div
-                className={` mr-5 pl-6 ${
-                  formInitiallySubmitted ? "opacity-visible" : "opacity-hidden"
-                }`}
-              >
-                <div
-                  className={`SMN_effect-64 ${
-                    simulateHoverEffect ? "simulated-hover-64" : ""
-                  }`}
-                >
-                  <a
-                    className={`custom-underline ${gameStarted ? "hide" : ""}`}
-                  >
-                    Year {showYear}
-                  </a>
-                </div>
-              </div>
-              {/* <div
-                className={` text-md mr-2 pl-1 on-small-screen 2${
-                  formInitiallySubmitted
-                    ? "opacity-hidden2"
-                    : "opacity-visible2"
-                }`}
-              >
-                <div
-                  className={`SMN_effect-64 ${
-                    simulateHoverEffect ? "simulated-hover-64" : ""
-                  }`}
-                >
-                  <a
-                    className={`custom-underline ${gameStarted ? "hide" : ""}`}
-                  >
-                    Maps with meaning
-                  </a>
-                </div>
-              </div> */}
-            </div>
-            <form
-              onSubmit={handleSubmit}
-              className="max-w-md menu align-center "
-            >
-              <div className="input relative text-gray-600 menu align-center ">
-                <input
-                  ref={yearInputRef}
-                  type="number"
-                  value={year}
-                  onChange={handleChange}
-                  placeholder="Enter a year (e.g., 1519)"
-                  style={{ fontFamily: "arial" }}
-                  maxLength="4"
-                  min="1"
-                  max="2024"
-                  title=""
-                  required
-                  className={`inputClass h-10 pl-5 pr-5 w-full rounded-lg text-sm focus:outline-none border-2px
-                text-center border-2 border-gray-400 button-3  ${
-                  isFilled ? "button-3" : "button-3"
-                }`} // Apply conditional class for  effects
-                  onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
+
+        <div className="fiimageContainer">
+          <div className="flex justify-center items-center ">
+            <div className="flex item-center yearImageContainer hover09 ">
+              <figure className="figureYear">
+                <img
+                  src={yearImage}
+                  alt={`Image for the year ${showYear}`}
+                  style={{ width: "500px", height: "400px" }} // Adjust as needed
+                  className="fwikiimg"
                 />
-                <button
-                  type="submit"
-                  className="absolute right-1 top-1 mt-2 mr-3"
-                >
-                  <svg
-                    className="h-4 w-4 fill-current"
-                    viewBox="0 0 56.966 56.966"
-                  >
-                    <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                  </svg>
-                </button>
-              </div>
-            </form>
-            <div className={`playbuttondiv ${gameStarted ? "hidden" : ""}`}>
-              <button
-                onClick={startGame}
-                className=" rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2 border-gray-400"
-              >
-                <figure>PLAY</figure>
-              </button>
+              </figure>
             </div>
-            <div
-              className={`countdown ml-auto mr-3 ${gameStarted ? "show" : ""}`}
+          </div>
+        </div>
+
+        <div className="footer-content flex flex-col items-center justify-center text-center mx-4 mt-8">
+          <div className="dice2">
+            <button
+              onSubmit={handleSubmit}
+              onClick={handleDiceClick}
+              className=" on-small-screen hover15"
             >
-              {/* {countdown} */}
-            </div>
-            <div className="dice">
-              <button
-                onSubmit={handleSubmit}
-                onClick={handleDiceClick}
-                className="p-2 pr-10 on-small-screen hover15"
-              >
-                {" "}
-                <figure>
-                  <Image
-                    src="/dice.png"
-                    alt="Roll Dice"
-                    width={40}
-                    height={40}
-                    style={{ objectFit: "contain" }}
-                  />
-                </figure>
-              </button>
+              {" "}
+              <figure>
+                <Image
+                  src="/dice.webp"
+                  alt="Roll Dice"
+                  width={40}
+                  height={40}
+                  style={{ objectFit: "contain" }}
+                />
+              </figure>
+            </button>
+            <div className="divider text-color-bg ">
+              <p className="text-gray-300 ">go to a random Year</p>
             </div>
           </div>
         </div>
-
-        {/* {showLoadingBar && <span className="_it4vx _72fik"></span>} */}
-
-        <div
-          dangerouslySetInnerHTML={{ __html: content }}
-          className="text-white"
-        />
-
-        <div
-          className="mapWithImageContainer"
-          style={{ position: "relative", width: "100%", height: "500px" }}
-        >
-          {gameEnded && (
-            <div
-              className="endGameModalContainer"
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 999,
-              }}
-            >
-              <EndGameModal
-                key={`endGameModal-${Date.now()}`} // This forces React to remount the component
-                onClose={() => setGameEnded(false)}
-                gameEnded={gameEnded}
-                difference={difference}
-                points={points}
-                startNextRound={startNextRound}
-                setSliderVisibility={setSliderVisibility}
-              />
-            </div>
-          )}
-          {typeof window !== "undefined" && (
-            <DynamicMap
-              closePopupsTrigger={closePopupsTrigger}
-              countries={countryLocations}
-              cities={cities}
-              details={details}
-            />
-          )}
-
-          <div
-            className={`slider-imageContainer slidercontainer ${
-              sliderVisibility ? "" : "hide"
-            }`}
-          >
-            <div className="flex justify-center items-center">
-              <div className="flex item-center  ">
-                <figure className="figureYear">
-                  <MultiRangeSlider
-                    min={validUserYear}
-                    max={validShowYear}
-                    onChange={() => {}}
-                    sliderVisibility={sliderVisibility}
-                    disabled={true} // This should make the slider read-only; adjust based on your actual slider component
-                  />
-                </figure>
-              </div>
-            </div>
-          </div>
-          <div className="iiimageContainer">
-            <div className="flex justify-center items-center ">
-              <div className="flex item-center yearImageContainer hover09 ">
-                <figure className="figureYear">
-                  <img
-                    src={yearImage}
-                    alt={`Image for the year ${showYear}`}
-                    style={{ width: "400px", height: "500px" }} // Adjust as needed
-                    className="wikiimg"
-                  />
-                </figure>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Footer />
       </div>
-
-      <div className="fiimageContainer">
-        <div className="flex justify-center items-center ">
-          <div className="flex item-center yearImageContainer hover09 ">
-            <figure className="figureYear">
-              <img
-                src={yearImage}
-                alt={`Image for the year ${showYear}`}
-                style={{ width: "500px", height: "400px" }} // Adjust as needed
-                className="fwikiimg"
-              />
-            </figure>
-          </div>
-        </div>
-      </div>
-
-      <div className="footer-content flex flex-col items-center justify-center text-center mx-4 mt-8">
-        <div className="dice2">
-          <button
-            onSubmit={handleSubmit}
-            onClick={handleDiceClick}
-            className=" on-small-screen hover15"
-          >
-            {" "}
-            <figure>
-              <Image
-                src="/dice.png"
-                alt="Roll Dice"
-                width={40}
-                height={40}
-                style={{ objectFit: "contain" }}
-              />
-            </figure>
-          </button>
-          <div className="divider text-color-bg ">
-            <p className="text-gray-300 ">go to a random Year</p>
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
+    </React.StrictMode>
   );
 };
 
-export default HomePage;
+export default React.memo(HomePage);

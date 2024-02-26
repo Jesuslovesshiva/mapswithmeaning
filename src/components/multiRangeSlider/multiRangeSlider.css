@@ -111,7 +111,7 @@ input {
 
 /* For Chrome, Safari, and other WebKit browsers */
 .thumb--zindex-4::-webkit-slider-thumb {
-  background-image: url("/flag1.png"); /* Adjust the path to your image */
+  background-image: url("/flag1.webp"); /* Adjust the path to your image */
   background-color: transparent; /* Hide the original background color */
   background-repeat: no-repeat;
   background-size: contain; /* Resize the image to fit inside the thumb */
@@ -122,7 +122,7 @@ input {
 
 /* For Firefox and other Gecko browsers */
 .thumb--zindex-4::-moz-range-thumb {
-  background-image: url("/flag1.png"); /* Adjust the path to your image */
+  background-image: url("/flag1.webp"); /* Adjust the path to your image */
   background-color: transparent; /* Hide the original background color */
   background-repeat: no-repeat;
   background-size: contain; /* Resize the image to fit inside the thumb */

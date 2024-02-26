@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer-content flex flex-col items-center justify-center text-center mx-4 hide-on-small-screen">
         <h3 className="text-3xl font-medium ">
           <div className="divider text-color-bg">
-            <hr className="gradient" /> <p className="text-gray-300"></p>
+            <hr className="gradient" /> <p className="text-gray-300 mt-10"></p>
           </div>
           Teocalli - A Map for every Year{" "}
         </h3>
@@ -20,11 +20,14 @@ const Footer = () => {
         </p>
         <ul className="socials flex items-center justify-center ">
           {/* Update href with actual links */}
-          <li className="mx-2 rounded-full fafooters ">
-            <a href="https://www.instagram.com/kunstmacht/" className="  p-3">
+          <li className="mx-2 fafooters ">
+            <a
+              href="https://www.instagram.com/kunstmacht/"
+              className="  p-3 fafooters hover:scale-100"
+            >
               <FontAwesomeIcon
                 icon={faInstagram}
-                className="text-6xl fafooters"
+                className="text-2xl"
                 size="3x"
               />
             </a>
