@@ -7,11 +7,15 @@ const EndGameModal = ({
   difference,
   points,
   startNextRound,
+  setSliderVisibility,
 }) => {
   const [isClosed, setIsClosed] = useState(false);
   const handleClose = () => {
     setIsClosed(true); // This will trigger the fade-out effect
-    setTimeout(onClose, 500); // Adjust the duration to match your CSS transition
+    setTimeout(() => {
+      onClose(); // This will close the modal
+      setSliderVisibility(false); // This will hide the slider
+    }, 220); // Adjust timeout to match your CSS transitions
   };
 
   const mapRef = useRef(null);
@@ -65,13 +69,17 @@ const EndGameModal = ({
       <button className="popup-close-button" onClick={handleClose}>
         ×
       </button>
-      <p className="text-gray-200 text-xl">
+      <p className="guess text-gray-200 text-xl">
         Your guess was <strong>{difference}</strong> years off
       </p>
-      <p className="text-gray-200 text-lg">
+      <p className="points text-gray-200 text-lg">
         Your points: <strong className="text--custom-teal">{points}</strong>
       </p>
-      <button className="nextround" onClick={startNextRound}>
+
+      <button
+        className="nextround  rounded-lg text-xl on-small-screen play-button hover15 text-custom-peach border-2 border-gray-400"
+        onClick={startNextRound}
+      >
         NEXT ROUND
       </button>
     </div>

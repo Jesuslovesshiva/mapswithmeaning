@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import './multiRangeSlider/multiRangeSlider.css';
+import '../components/multiRangeSlider/multiRangeSlider.css';
 import '../components/EndGameModal/EndGameModal.css';
 
 

@@ -138,12 +138,12 @@ body {
 .slider-imageContainer {
   position: absolute;
   left: 0;
-  right: 0;
   margin-left: auto;
   margin-right: auto;
-  top: -10%;
   width: 100px; /* Need a specific value to work */
-  z-index: 99;
+  right: 11px;
+  top: 62%;
+  z-index: 9999;
 }
 
 /* Ensure the parent container does not force a larger width */
@@ -520,16 +520,6 @@ body {
 } */
 
 @media (max-width: 1250px) {
-  .slider-imageContainer {
-    margin-left: auto;
-    margin-right: auto;
-    top: 90%;
-    right: 60%;
-    z-index: 800;
-  }
-  .slider {
-    color: black;
-  }
   .iiimageContainer {
     width: 300px;
   }
@@ -544,13 +534,6 @@ body {
 }
 
 @media (max-width: 850px) {
-  .slider-imageContainer {
-    margin-left: auto;
-    margin-right: auto;
-    top: 90%;
-    right: 40%;
-    z-index: 99;
-  }
   .iiimageContainer {
     width: 200px;
   }
@@ -594,14 +577,6 @@ body {
   }
   .row3 {
     padding: 16px;
-  }
-
-  .slider-imageContainer {
-    right: 0%;
-
-    margin-left: auto;
-    margin-right: auto;
-    top: 92%;
   }
 
   input[type="number"] {
@@ -653,10 +628,6 @@ body {
     padding: 16px 12px;
   }
 
-  .slider-imageContainer {
-    right: 4px;
-    top: 88%;
-  }
   input[type="number"] {
     width: 120px;
   }
@@ -709,4 +680,9 @@ body {
     ,
     transparent
   ); /* Creates the fade effect */
+}
+
+.slider-imageContainer {
+  -webkit-transition: 0.3s ease-in-out;
+  transition: opacity 0.5s, visibility 0.5s;
 }

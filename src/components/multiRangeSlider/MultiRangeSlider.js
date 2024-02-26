@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-const MultiRangeSlider = ({ min, max, onChange }) => {
+const MultiRangeSlider = ({ min, max, onChange, sliderVisibility }) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(null);
@@ -53,7 +53,14 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
   }, [minVal, maxVal, onChange]);
 
   return (
-    <div className="the-slider-container">
+    <div
+      className="the-slider-container"
+      style={{
+        transition: "opacity 0.5s ease",
+        opacity: sliderVisibility ? 1 : 0,
+        visibility: sliderVisibility ? "visible" : "hidden",
+      }}
+    >
       <input
         type="range"
         min="1"
@@ -90,8 +97,10 @@ const MultiRangeSlider = ({ min, max, onChange }) => {
         <div ref={range} className="slider__range" />
         {/* <div className="slider__left-value">{minVal}</div>
         <div className="slider__right-value">{maxVal}</div> */}
-        <div className="slider__left-value">1</div>
-        <div className="slider__right-value">{currentYear}</div>
+        {/* <div className="slider__left-value">1</div>
+        <div className="slider__right-value">{currentYear}</div> */}
+        <div className="slider__left-value"></div>
+        <div className="slider__right-value"></div>
       </div>
     </div>
   );

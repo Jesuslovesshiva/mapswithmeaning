@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Footer from "./footer";
 import Image from "next/image";
-import MultiRangeSlider from "./multiRangeSlider";
+import MultiRangeSlider from "../components/multiRangeSlider";
 import EndGameModal from "../components/EndGameModal";
 
 // Dynamically import the Leaflet map without SSR
@@ -104,6 +104,7 @@ const HomePage = () => {
     setShowYear(newYear.toString()); // Optionally select a new year when game starts
 
     await fetchAndSetLocations(newYear.toString()); // Correct use of 'await' within an 'async' function
+    setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
 
     // Fetch and set the year image asynchronously
     try {
@@ -147,6 +148,7 @@ const HomePage = () => {
     setGameEnded(true); // Indicate that the game has ended
     setPoints(maxPoints); // Award full points for a correct guess
     setUserYear(showYear); // Set userYear to the correct year for display
+    setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
 
     // Add any additional logic you want to execute when the game is won, such as updating a leaderboard, etc.
   };
@@ -156,6 +158,7 @@ const HomePage = () => {
     console.log("Game lost");
     setGameStarted(false); // Mark the game as not started
     setGameEnded(true);
+    setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
 
     const difference = Math.abs(parseInt(showYear, 10) - guessedYear);
     console.log(`Calculated difference: ${difference}`); // Add this line
@@ -192,6 +195,8 @@ const HomePage = () => {
     setYear(""); // Clear the input field for year
     setSliderVisibility(false); // If you're using a slider, hide it for the new round
     setSimulateHoverEffect(false); // If you use hover effects, reset this
+    setClosePopupsTrigger((prevCount) => prevCount + 1); // Increment the trigger to close popups
+
     // Reset countdown if you're using one, and restart it
     // clearInterval(intervalId1); // Clear existing interval
     // const newIntervalId1 = setInterval(() => {
@@ -380,9 +385,9 @@ const HomePage = () => {
             </div>
             <form
               onSubmit={handleSubmit}
-              className="max-w-md menu align-center"
+              className="max-w-md menu align-center "
             >
-              <div className="input relative text-gray-600 menu align-center">
+              <div className="input relative text-gray-600 menu align-center ">
                 <input
                   ref={yearInputRef}
                   type="number"
@@ -396,7 +401,7 @@ const HomePage = () => {
                   title=""
                   required
                   className={`inputClass h-10 pl-5 pr-5 w-full rounded-lg text-sm focus:outline-none border-2px
-                text-center border-2 border-gray-400 button-3 ${
+                text-center border-2 border-gray-400 button-3  ${
                   isFilled ? "button-3" : "button-3"
                 }`} // Apply conditional class for  effects
                   onInput={(e) => (e.target.value = e.target.value.slice(0, 4))} // Restricts input to 4 digits
@@ -476,7 +481,8 @@ const HomePage = () => {
                 gameEnded={gameEnded}
                 difference={difference}
                 points={points}
-                startNextRound={startNextRound} // Ensure you have this function defined or adapt as needed
+                startNextRound={startNextRound}
+                setSliderVisibility={setSliderVisibility}
               />
             </div>
           )}
@@ -500,7 +506,8 @@ const HomePage = () => {
                   <MultiRangeSlider
                     min={validUserYear}
                     max={validShowYear}
-                    onChange={() => {}} // No-op function since we don't want changes
+                    onChange={() => {}}
+                    sliderVisibility={sliderVisibility}
                     disabled={true} // This should make the slider read-only; adjust based on your actual slider component
                   />
                 </figure>
@@ -539,7 +546,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="footer-content flex flex-col items-center justify-center text-center mx-4">
+      <div className="footer-content flex flex-col items-center justify-center text-center mx-4 mt-8">
         <div className="dice2">
           <button
             onSubmit={handleSubmit}
@@ -557,8 +564,8 @@ const HomePage = () => {
               />
             </figure>
           </button>
-          <div className="divider text-color-bg">
-            <p className="text-gray-300">go to a random Year</p>
+          <div className="divider text-color-bg ">
+            <p className="text-gray-300 ">go to a random Year</p>
           </div>
         </div>
       </div>

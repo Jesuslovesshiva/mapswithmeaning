@@ -18,7 +18,7 @@
 
 .popup1 {
   font-size: 1.2rem;
-  width: 60vw;
+  width: 30vw;
   background-color: rgb(45, 55, 72, 0.95) !important;
   border-radius: 8px;
   position: absolute;
@@ -80,7 +80,7 @@ p strong {
 .popup1 .material-symbols-outlined {
   border: 3px solid var(--custom-bg);
   font-size: 4rem;
-  margin-top: -20%;
+  margin-top: -15%;
   border-radius: 10rem;
   color: var(--clr-peach);
   box-shadow: 0 6px 3px rgba(0, 0, 0, 0.2);
@@ -91,37 +91,101 @@ p strong {
   width: 100%;
   margin-top: 30px;
   padding: 5px 0;
-  background: var(--custom-teal);
-  color: var(--custom-white);
-  border: 0;
-  outline: none;
-  border-radius: 8px;
-  cursor: pointer;
+  background: var(--custom-transparent);
+  letter-spacing: 0px;
+
   box-shadow: 0 5px 3px rgba(0, 0, 0, 0.2);
 }
 
+.nextround:hover {
+  color: var(--custom-teal);
+  dispaly: flex;
+}
+
+.points {
+  margin-bottom: 60px;
+}
+
+@media (max-width: 2750px) {
+  .popup1 .material-symbols-outlined {
+    margin-top: -10%;
+  }
+
+  .points {
+    margin-bottom: 60px;
+  }
+  .popup1 {
+    width: 32vw;
+  }
+}
+
 @media (max-width: 1250px) {
+  .popup1 .material-symbols-outlined {
+    margin-top: -19%;
+  }
+
+  .points {
+    margin-bottom: 60px;
+  }
+  .popup1 {
+    width: 40vw;
+  }
 }
 
 @media (max-width: 850px) {
+  .points {
+    margin-bottom: 60px;
+  }
   .popup1 {
-    width: 30vw;
+    width: 50vw;
   }
 }
 
 @media (max-width: 700px) {
+  .points {
+    margin-bottom: 60px;
+  }
   .popup1 {
-    width: 70vw;
+    width: 60vw;
   }
 }
 
 @media (max-width: 550px) {
-}
-@media (max-width: 450px) {
-}
-
-@media (max-width: 370px) {
+  .points {
+    margin-bottom: 60px;
+  }
   .popup1 {
     width: 70vw;
   }
+}
+@media (max-width: 450px) {
+  .points {
+    margin-bottom: 60px;
+  }
+  .popup1 {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 370px) {
+  .popup1 .material-symbols-outlined {
+    margin-top: -21%;
+  }
+
+  .points {
+    margin-bottom: 60px;
+  }
+  .popup1 {
+    width: 90vw;
+  }
+}
+
+.figureYear {
+  -webkit-transition: 0.3s ease-in-out;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+.slider-imageContainer {
+  -webkit-transition: 0.3s ease-in-out;
+  transition: opacity 0.5s, visibility 0.5s;
 }
