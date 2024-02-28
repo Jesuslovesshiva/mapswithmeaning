@@ -18,75 +18,34 @@ const Footer = () => {
           interactive maps. Dive into the past, uncover hidden stories, and see
           the world from a new perspective — all at your fingertips.
         </p>
-        <ul className="socials flex items-center justify-center ">
-          {/* Update href with actual links */}
-          <li className="mx-2 fafooters ">
+        {/* <ul className=" flex items-center justify-center ">
+          <li className="mx-2 ">
             <a
               href="https://www.instagram.com/kunstmacht/"
-              className="  p-3 fafooters hover:scale-100"
+              className=" fa-fw p-5  hover:text-custom-teal"
             >
-              <FontAwesomeIcon
-                icon={faInstagram}
-                className="text-2xl"
-                size="3x"
-              />
+              <FontAwesomeIcon icon={faInstagram} />
             </a>
           </li>
-          <li className="mx-2 fafooters">
+          <li className="mx-2 ">
             <a
               href="https://github.com/Jesuslovesshiva"
-              className=" p-3 rounded-full fafooters hover:scale-100"
+              className="fa-fw p-5 hover:text-custom-teal"
             >
-              <FontAwesomeIcon icon={faGithub} className="text-2xl" />
+              <FontAwesomeIcon icon={faGithub} />
             </a>
           </li>
-
-          {/* <li className="mx-2">
-            <a
-              href="#"
-              className="text-white border border-white p-2 rounded-full hover:text-cyan-500"
-            >
-              <FontAwesomeIcon icon={faLinkedin} />
-            </a>
-          </li> */}
-        </ul>
+        </ul> */}
       </div>
-      <div className=" footer-bottom text-center mx-5 m-10">
+      {/* <div className=" footer-bottom text-center ">
         <p className="text-gray-400">
           copyright &copy;{" "}
-          <a href="#" className="text-grey-400  hover:text-custom-teal">
+          <span href="#" className="text-grey-400  hover:text-custom-teal">
             Daniel Leitner
-          </a>
-          <span className="text-gray-500 text-sm ml-2 mt-2">
-            • Google Geocoding API for geocoding locations, Wikipedia API for
-            retrieving historical information & Images | v1.26
           </span>
+          <span className="text-gray-500 text-sm">• | v1.29</span>
         </p>
-        {/* <div className="footer-menu">
-          <ul className="flex justify-center space-x-4">
-            <li>
-              <a href="" className="text-gray-300 hover:text-blue-400">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-gray-300 hover:text-blue-400">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-gray-300 hover:text-blue-400">
-                Contact
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-gray-300 hover:text-blue-400">
-                Blog
-              </a>
-            </li>
-          </ul>
-        </div> */}
-      </div>
+      </div> */}
     </footer>
   );
 };

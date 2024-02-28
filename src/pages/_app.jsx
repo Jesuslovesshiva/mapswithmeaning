@@ -10,25 +10,8 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <title>Teocalli</title>
-        <title>Your Site Title</title>
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700&display=swap"
-          as="style"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700&display=swap"
-          media="print"
-          onLoad="this.media='all'"
-        />
-        <noscript>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700&display=swap"
-            rel="stylesheet"
-            type="text/css"
-          />
-        </noscript>
+        <title>A Map for every Year</title>
+
         <link rel="icon" href="/favicon/favicon.ico" />
         <link
           rel="apple-touch-icon"
@@ -65,7 +48,7 @@ export default function App({ Component, pageProps }) {
           href="/favicon/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        {/* Add a site.webmanifest file in your public directory with icon details for Android */}
+
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
