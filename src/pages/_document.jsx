@@ -5,7 +5,6 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link
-          rel="preload"
           href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700&&display=swap"
           type="font/woff2"
           as="font"

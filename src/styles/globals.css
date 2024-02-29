@@ -127,7 +127,6 @@ body {
   position: absolute;
   top: 0%;
   right: 0px;
-  width: 400px;
   height: 0%;
   z-index: 800;
 }
@@ -144,11 +143,6 @@ body {
 }
 
 /* Ensure the parent container does not force a larger width */
-.wikiimg {
-  position: relative; /* or other positioning if needed */
-  width: auto; /* adjust width as necessary */
-  display: inline-block; /* or 'block' depending on your layout */
-}
 
 /*  */
 
@@ -221,21 +215,20 @@ body {
 }
 
 .play-button1 {
-  /* margin-right: 1em; */
   letter-spacing: 1px;
 }
 
 .hover15 figure {
   position: relative;
-  width: 40px; /* Define a fixed width */
-  height: 37px; /* Define a fixed height */
-  line-height: 37px; /* Align text vertically */
   text-align: center; /* Align text horizontally */
 }
 
+.figurePlay {
+  width: 45px;
+  line-height: 37px; /* Align text vertically */
+}
+
 .hover15 figure .play-button {
-  width: 100%;
-  height: 100%;
   background-color: #000; /* Button background color */
   color: white; /* Button text color */
   border: none;
@@ -250,8 +243,6 @@ body {
   z-index: 2;
   display: block;
   content: "";
-  width: 0;
-  height: 0;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 100%;
   -webkit-transform: translate(-50%, -50%);
@@ -397,42 +388,6 @@ body {
   transition: 0.3s ease-in-out;
 }
 
-/* .wikiimgFade {
-  position: relative;
-}
-
-.wikiimgFade::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 1)
-  );
-  z-index: 1;
-} */
-/* .wikiimg {
-  -webkit-mask-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(rgba(0, 0, 0, 1)),
-    to(rgba(0, 0, 0, 0))
-  );
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-} */
-
-.fafooter {
-  opacity: 1;
-  transition: opacity 0.3s ease-out;
-  transform: scale(1); /* Initial scale is 100% */
-}
 .fafooters:hover {
   transform: scale(0.92); /* Scale down to 80% */
   color: var(--custom-teal);
@@ -440,8 +395,7 @@ body {
 
 .imageContainer {
   position: relative;
-  width: 400px; /* or the width of your image */
-  height: 500px; /* or the height of your image */
+
   background: linear-gradient(
     to right,
     white 0%,
@@ -461,12 +415,12 @@ body {
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  width: 100%;
-  height: 500px !important;
-  object-fit: cover; /* Adjust as needed to fit your design */
-  /* Add these for the fade-in effect */
+  height: 500px;
+  object-fit: cover;
   opacity: 0.5; /* Start with the image invisible */
   transition: opacity 2s ease-in-out; /* Adjust time as necessary */
+  position: relative; /* or other positioning if needed */
+  display: inline-block; /* or 'block' depending on your layout */
 }
 
 .wikiimg-visible {
@@ -477,9 +431,6 @@ body {
 .fiimageContainer {
   display: none;
   position: absolute;
-  bottom: 200;
-  right: 0px;
-  width: 100%;
   z-index: 3;
 }
 
@@ -494,11 +445,11 @@ body {
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  width: 100%;
+  height: 200px;
+  width: 600px;
+
   object-fit: cover;
   object-position: 50% 100%;
-
-  /* Add these for the fade-in effect */
   opacity: 0.5; /* Start with the image invisible */
   transition: opacity 2s ease-in-out; /* Adjust time as necessary */
 }
@@ -512,9 +463,6 @@ body {
   opacity: 0.4;
   display: none;
   position: absolute;
-  top: ;
-  right: 0px;
-  width: 100%;
   z-index: 3;
 }
 
@@ -529,12 +477,10 @@ body {
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0) 100%
   );
-  width: 100%;
-  height: 50% !important;
+  width: 600px;
+  height: 130px;
   object-fit: cover;
   object-position: 50% 0%;
-
-  /* Add these for the fade-in effect */
   opacity: 0.8; /* Start with the image invisible */
   transition: opacity 2s ease-in-out; /* Adjust time as necessary */
 }
@@ -564,9 +510,6 @@ body {
   .iiimageContainer {
     width: 300px;
   }
-  .figureYear {
-    width: 100%;
-  }
 
   .hover09 {
     dispaly: flex;
@@ -592,9 +535,6 @@ body {
   .iiimageContainer {
     width: 200px;
   }
-  .figureYear {
-    width: 100%;
-  }
 
   .hover09 {
     dispaly: flex;
@@ -618,8 +558,8 @@ body {
 
 @media (max-width: 550px) {
   .row3 {
-    margin: 0px 40px;
-    padding-bottom: 1.5em;
+    margin: 0px 45px;
+    padding-bottom: 0.7em;
     justify-content: space-between;
     z-index: 99;
   }
@@ -629,9 +569,6 @@ body {
     z-index: -1;
   }
 
-  .dice {
-    display: none;
-  }
   .dice2 {
     position: relative;
     z-index: 99;
@@ -683,7 +620,7 @@ body {
 }
 @media (max-width: 450px) {
   .row3 {
-    margin: 0px 20px;
+    margin: 0px 22px;
     justify-content: space-between;
     z-index: 99;
   }
@@ -694,18 +631,10 @@ body {
 }
 
 @media (max-width: 370px) {
-  .row3 {
-    margin: 0px 10px;
-    justify-content: space-between;
-    z-index: 99;
-  }
-  input[type="number"] {
-    width: 100vw0px;
-  }
 }
 
 .dice {
-  display: none;
+  display: flex;
 }
 .dice2 {
   display: flex;

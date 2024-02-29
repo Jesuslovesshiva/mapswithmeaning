@@ -13,7 +13,7 @@ const SplashScreen = () => {
       setIsVisible(false);
       // Re-enable scrolling when the splash screen is hidden
       document.body.style.overflow = "auto";
-    }, 300); // Adjust the time as needed
+    }, 100); // Adjust the time as needed
 
     return () => {
       clearTimeout(timer);

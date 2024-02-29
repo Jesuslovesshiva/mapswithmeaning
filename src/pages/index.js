@@ -31,7 +31,7 @@ const HomePage = () => {
   const [locations, setLocations] = useState([]);
   const [countryLocations, setCountryLocations] = useState([]);
   const [details, setDetails] = useState({});
-  const [showYear, setShowYear] = useState("6");
+  const [showYear, setShowYear] = useState("");
   const [cities, setCities] = useState([]);
   const [isFilled, setIsFilled] = useState(false);
   const [simulateHoverEffect, setSimulateHoverEffect] = useState(false);
@@ -249,7 +249,8 @@ const HomePage = () => {
                           }`}
                           onLoad={() => setImageLoaded(true)}
                           width={500}
-                          height={120}
+                          height={500}
+                          priority={true}
                         />
                       </figure>
                     </div>
@@ -268,6 +269,7 @@ const HomePage = () => {
                       }}
                       width={150}
                       height={150}
+                      priority={true}
                     />
                   </div>
                   <form onSubmit={handleSubmit} className="max-w-md  ">
@@ -294,7 +296,7 @@ const HomePage = () => {
                       />
                       <button
                         type="submit"
-                        className="absolute right-1 top-1 mt-2 mr-3"
+                        className="absolute right-3 top-1 mt-2 "
                       >
                         <svg
                           className="h-4 w-4 fill-current"
@@ -305,7 +307,7 @@ const HomePage = () => {
                       </button>
                     </div>
                   </form>
-                  <div className=" flex w-screen -mt-10 z-99 mr-5">
+                  <div className=" flex w-screen -mt-10 z-99 ">
                     <div className="flex   w-screen">
                       <div className="row3  justify-evenly w-screen flex  pb-8">
                         <div className="text-gray-500 text-3xl font-bold ml- ">
@@ -340,7 +342,7 @@ const HomePage = () => {
                             onClick={startGame}
                             className=" rounded-lg text-xl on-small-screen play-button1 hover15 text-custom-peach border-2 border-gray-400"
                           >
-                            <figure>PLAY</figure>
+                            <figure className="figurePlay">PLAY</figure>
                           </button>
                         </div>
                       </div>
@@ -419,8 +421,9 @@ const HomePage = () => {
                           imageLoaded ? "wikiimg-visible" : ""
                         }`}
                         onLoad={() => setImageLoaded(true)}
-                        width={400}
+                        width={500}
                         height={500}
+                        priority={true}
                       />
                     </figure>
                   </div>
@@ -440,7 +443,7 @@ const HomePage = () => {
                     }`}
                     onLoad={() => setImageLoaded(true)}
                     width={500}
-                    height={400}
+                    height={500}
                     loading="lazy"
                   />
                 </figure>
@@ -475,7 +478,8 @@ const HomePage = () => {
           </div>
         </div>
         <Footer />
-        <div className="justify-center items-center flex fixed inset-x--0 w-full text-xs bottom-0 z-[102] bg-custom-bg h-8 ">
+
+        <div className="justify-center items-center flex flex-row fixed inset-x--0 w-full text-xs bottom-0 z-[102] bg-custom-bg h-8 ">
           <div className=" text-white text-xs h-full justify-center items-center flex"></div>
           <div className=" footer-bottom text-center ">
             <p className="text-gray-400">
@@ -483,7 +487,25 @@ const HomePage = () => {
               <span href="#" className="text-grey-400  text-custom-teal">
                 Daniel Leitner
               </span>
-              <span className="text-gray-500 text-sm">• | v1.29</span>
+              <span className="text-gray-500 text-sm mr-2">• | v1.29</span>
+              {/* <button
+                onSubmit={handleSubmit}
+                onClick={handleDiceClick}
+                className="  on-small-screen hover15 "
+                loading="lazy"
+              >
+                {" "}
+                <figure>
+                  <Image
+                    src="/dice.webp"
+                    alt="Roll Dice"
+                    width={12}
+                    height={12}
+                    style={{ objectFit: "contain" }}
+                    loading="lazy"
+                  />
+                </figure>
+              </button> */}
             </p>
           </div>
         </div>
